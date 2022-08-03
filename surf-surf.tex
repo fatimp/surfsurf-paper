@@ -703,27 +703,17 @@ $F_{SS}$ for resized and digitized images due to pixelization of the interface
 (the absence of "noise" on $F_{SS}$ for the rescaled image).
 
 \begin{figure*}[ht]
-  \centering \subfigure[The image resulting from digitizing of Poisson disks to
+  \centering
+  \subfigure[The image resulting from digitizing of Poisson disks to
     the size of $300 \times 300$ pixels, and then magnified to
     $4000 \times 4000$ pixels using bilinear interpolation]{
-    \includegraphics[width=0.45\linewidth, frame]{resize-effects/disks-bilinear.png}
+    \includegraphics[width=0.25\linewidth, frame]{resize-effects/disks-bilinear.png}
     \label{fig:resized-bilinear}}
-  \hfill \subfigure[Digitized image of Poisson disks with the size of
+  \subfigure[Digitized image of Poisson disks with the size of
     $4000 \times 4000$ pixels]{
-    \includegraphics[width=0.45\linewidth, frame]{resize-effects/disks-big.png}
+    \includegraphics[width=0.25\linewidth, frame]{resize-effects/disks-big.png}
     \label{fig:resized-true}}
-  \caption[]{An example of images with almost identical correlation functions
-    obtained using different methods: direct discretization from known disk
-    positions and magnification using bilinear
-    interpolation. \textcolor{red}{Vaslya, please: combine this figure and the
-      next one into a single one, make frames for the images and also scale them
-      a bit so that would not cover so much space, for CFs legends please rename
-      resize->magnified, calculated->discretized}}
-  \label{fig:resized}
-\end{figure*}
-
-\begin{figure*}[ht]
-  \centering
+  \vskip\baselineskip
   \subfigure[Surface-surface functions]{
     \includegraphics[width=0.45\linewidth]{resize-effects/surfsurf.png}
     \label{fig:resized-ss}}
@@ -731,10 +721,10 @@ $F_{SS}$ for resized and digitized images due to pixelization of the interface
   \subfigure[Surface-void functions]{
     \includegraphics[width=0.45\linewidth]{resize-effects/surfvoid.png}
     \label{fig:resized-sv}}
-  \caption[]{Correlation functions for image resized from $300 \times 300$ to
-    $4000 \times 4000$ compared to correlation functions of the original image
-    and recalculated?? image.}
-  \label{fig:resized-cfs}
+  \caption[]{An example of images with almost identical correlation functions
+    obtained using different methods: direct digitalization from known disk
+    positions and magnification using bilinear interpolation.}
+  \label{fig:resized}
 \end{figure*}
 
 \subsection{Criterion for accurate evaluation of surface CFs from discrete images}
