@@ -16,6 +16,7 @@
 \usepackage{algpseudocode}
 \usepackage{graphicx}
 \usepackage{subfigure}
+\usepackage[export]{adjustbox}
 
 \definecolor{light-gray}{gray}{0.95}
 \newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
@@ -540,42 +541,39 @@ correlation functions approach theoretical values when the resolution is high
 enough.
 \begin{figure*}[t]
   \centering
-  \subfigure[Image size $4096 \times 4096$, value noise, $C_{0.5} = 0.9692$]{
-    \includegraphics[width=0.22\linewidth]{images/noise-4096.png}
-    \label{fig:noise-4096}}
-  \hfill
-  \subfigure[Image size $1024 \times 1024$, value noise, $C_{0.5} = 0.9386$]{
-    \includegraphics[width=0.22\linewidth]{images/noise-1024.png}
-    \label{fig:noise-1024}}
-  \hfill
-  \subfigure[Image size $256 \times 256$, value noise, $C_{0.5} = 0.8770$]{
-    \includegraphics[width=0.22\linewidth]{images/noise-256.png}
-    \label{fig:noise-256}}
-  \hfill
-  \subfigure[Image size $64 \times 64$, value noise, $C_{0.5} = 0.7524$]{
-    \includegraphics[width=0.22\linewidth]{images/noise-64.png}
-    \label{fig:noise-64}}
-  \vskip\baselineskip
   \subfigure[Image size $4096 \times 4096$, disk radius 61.44 pixels, $C_{0.5} = 0.9593$]{
-    \includegraphics[width=0.22\linewidth]{images/disks-0015-5e-5-4096.png}
+    \includegraphics[width=0.22\linewidth, frame]{images/disks-0015-5e-5-4096.png}
     \label{fig:disks-4096}}
   \hfill
   \subfigure[Image size $1024 \times 1024$, disk radius 15.36 pixels, $C_{0.5} = 0.9185$]{
-    \includegraphics[width=0.22\linewidth]{images/disks-0015-5e-5-1024.png}
+    \includegraphics[width=0.22\linewidth, frame]{images/disks-0015-5e-5-1024.png}
     \label{fig:disks-1024}}
   \hfill
   \subfigure[Image size $256 \times 256$, disk radius 3.84 pixels, $C_{0.5} = 0.8356$]{
-    \includegraphics[width=0.22\linewidth]{images/disks-0015-5e-5-256.png}
+    \includegraphics[width=0.22\linewidth, frame]{images/disks-0015-5e-5-256.png}
     \label{fig:disks-256}}
   \hfill
   \subfigure[Image size $64 \times 64$, disk radius 0.96 pixels, $C_{0.5} = 0.6549$]{
-    \includegraphics[width=0.22\linewidth]{images/disks-0015-5e-5-64.png}
+    \includegraphics[width=0.22\linewidth, frame]{images/disks-0015-5e-5-64.png}
     \label{fig:disks-64}}
-  \caption[]{The 2D images of overlapping disks (a-d) and value noise (e-h) with
-    different resolution (\cref{sec:results}). \textcolor{red}{Vasya, please,
-      put disks to the upper row, and move value noise below, also, please, add
-      a frame around each image for visibility, e.g., like it is on Fig.15 you
-      have below}}
+  \vskip\baselineskip
+  \subfigure[Image size $4096 \times 4096$, value noise, $C_{0.5} = 0.9692$]{
+    \includegraphics[width=0.22\linewidth, frame]{images/noise-4096.png}
+    \label{fig:noise-4096}}
+  \hfill
+  \subfigure[Image size $1024 \times 1024$, value noise, $C_{0.5} = 0.9386$]{
+    \includegraphics[width=0.22\linewidth, frame]{images/noise-1024.png}
+    \label{fig:noise-1024}}
+  \hfill
+  \subfigure[Image size $256 \times 256$, value noise, $C_{0.5} = 0.8770$]{
+    \includegraphics[width=0.22\linewidth, frame]{images/noise-256.png}
+    \label{fig:noise-256}}
+  \hfill
+  \subfigure[Image size $64 \times 64$, value noise, $C_{0.5} = 0.7524$]{
+    \includegraphics[width=0.22\linewidth, frame]{images/noise-64.png}
+    \label{fig:noise-64}}
+  \caption[]{2D images of overlapping disks (a-d) and value noise (e-h) with
+    different resolution (\cref{sec:results}).}
   \label{fig:disks-noise}
 \end{figure*}
 
@@ -708,11 +706,11 @@ $F_{SS}$ for resized and digitized images due to pixelization of the interface
   \centering \subfigure[The image resulting from digitizing of Poisson disks to
     the size of $300 \times 300$ pixels, and then magnified to
     $4000 \times 4000$ pixels using bilinear interpolation]{
-    \includegraphics[width=0.45\linewidth]{resize-effects/disks-bilinear.png}
+    \includegraphics[width=0.45\linewidth, frame]{resize-effects/disks-bilinear.png}
     \label{fig:resized-bilinear}}
   \hfill \subfigure[Digitized image of Poisson disks with the size of
     $4000 \times 4000$ pixels]{
-    \includegraphics[width=0.45\linewidth]{resize-effects/disks-big.png}
+    \includegraphics[width=0.45\linewidth, frame]{resize-effects/disks-big.png}
     \label{fig:resized-true}}
   \caption[]{An example of images with almost identical correlation functions
     obtained using different methods: direct discretization from known disk
@@ -925,27 +923,27 @@ surface correlation functions for such porous media in \cref{sec:outline}.
 \begin{figure*}[t]
   \centering
   \subfigure[Sandstone 1, $C_{0.5} = 0.938$]{
-    \includegraphics[width=0.15\linewidth]{images/sandstone1.png}
+    \includegraphics[width=0.14\linewidth, frame]{images/sandstone1.png}
     \label{fig:sandstone1}}
   \hfill
   \subfigure[Sandstone 2, $C_{0.5} = 0.937$]{
-    \includegraphics[width=0.15\linewidth]{images/sandstone2.png}
+    \includegraphics[width=0.14\linewidth, frame]{images/sandstone2.png}
     \label{fig:sandstone2}}
   \hfill
   \subfigure[Sandstone 3, $C_{0.5} = 0.939$]{
-    \includegraphics[width=0.15\linewidth]{images/sandstone3.png}
+    \includegraphics[width=0.14\linewidth, frame]{images/sandstone3.png}
     \label{fig:sandstone3}}
   \hfill
   \subfigure[Carbonate 1, $C_{0.5} = 0.950$]{
-    \includegraphics[width=0.15\linewidth]{images/carbonate1.png}
+    \includegraphics[width=0.14\linewidth, frame]{images/carbonate1.png}
     \label{fig:carbonate1}}
   \hfill
   \subfigure[Carbonate 2, $C_{0.5} = 0.954$]{
-    \includegraphics[width=0.15\linewidth]{images/carbonate2.png}
+    \includegraphics[width=0.14\linewidth, frame]{images/carbonate2.png}
     \label{fig:carbonate2}}
   \hfill
   \subfigure[Carbonate 3, $C_{0.5} = 0.946$]{
-    \includegraphics[width=0.15\linewidth]{images/carbonate3.png}
+    \includegraphics[width=0.14\linewidth, frame]{images/carbonate3.png}
     \label{fig:carbonate3}}
   \vskip\baselineskip
   \subfigure[Surface-surface function]{
@@ -965,19 +963,19 @@ surface correlation functions for such porous media in \cref{sec:outline}.
 \begin{figure*}[t]
   \centering
   \subfigure[Sandstone 4, $C_{0.5} = 0.931$]{
-    \includegraphics[width=0.2\linewidth]{images/846-79_0009.png}
+    \includegraphics[width=0.2\linewidth, frame]{images/846-79_0009.png}
     \label{fig:sandstone4}}
   \hfill
   \subfigure[Sandstone 5, $C_{0.5} = 0.951$]{
-    \includegraphics[width=0.2\linewidth]{images/859-12_0005.png}
+    \includegraphics[width=0.2\linewidth, frame]{images/859-12_0005.png}
     \label{fig:sandstone5}}
   \hfill
   \subfigure[Carbonate 4, $C_{0.5} = 0.931$]{
-    \includegraphics[width=0.2\linewidth]{images/C1-1-g6_010.png}
+    \includegraphics[width=0.2\linewidth, frame]{images/C1-1-g6_010.png}
     \label{fig:carbonate4}}
   \hfill
   \subfigure[Carbonate 5, $C_{0.5} = 0.931$]{
-    \includegraphics[width=0.2\linewidth]{images/C3-3-G0 (32).png}
+    \includegraphics[width=0.2\linewidth, frame]{images/C3-3-G0 (32).png}
     \label{fig:carbonate5}}
   \vskip\baselineskip
   \subfigure[Surface-surface function]{
