@@ -539,7 +539,7 @@ by 4, 16, and 64 times with the help of bicubic interpolation
 \cite{ledesma2018effect} (see \cref{fig:disks-noise}). We show that calculated
 correlation functions approach theoretical values when the resolution is high
 enough.
-\begin{figure*}[t]
+\begin{figure*}[!pt]
   \centering
   \subfigure[Image size $4096 \times 4096$, disk radius 61.44 pixels, $C_{0.5} = 0.9593$]{
     \includegraphics[width=0.22\linewidth, frame]{images/disks-0015-5e-5-4096.png}
@@ -591,7 +591,7 @@ respectively, where $L_{scaled}$ is the side of the rescaled image and
 $L_{orig}$ is the side of the original image. The resulting scaled surface CFs
 are shown in \cref{fig:scaling-alltogether}.
 
-\begin{figure*}[ht]
+\begin{figure*}[!pt]
   \centering
   \subfigure[Surface-surface, disks]{
     \includegraphics[width=0.475\linewidth]{images/plot-ss-balls.png}
@@ -702,7 +702,7 @@ high-resolution and magnified images; the only flaw being the difference in
 $F_{SS}$ for resized and digitized images due to pixelization of the interface
 (the absence of "noise" on $F_{SS}$ for the rescaled image).
 
-\begin{figure*}[ht]
+\begin{figure*}[!pt]
   \centering
   \subfigure[The image resulting from digitizing of Poisson disks to
     the size of $300 \times 300$ pixels, and then magnified to
@@ -879,19 +879,48 @@ hierarchical structure, i.e., XCT scanning can reveal only pore sizes with the
 range within the imaging resolution, whilst imaging with higher resolution
 (e.g., SEM or FIB-SEM techniques) usually reveals sub-micron (under-resolution
 porosity for XCT) porosity. The details of the samples are provided in
-\textcolor{red}{Table 1}.
+\cref{tab:samples}.
 
-\textcolor{red}{Create a table with: Sample name (Sandstone 1... Carbonate 1...;
-  Imaging type: XCT or SEM; Dimensions: in pixels/voxels; Imaging resolution:
-  $\mu$m; anything else?)}
+\begin{table*}[!pt]
+  \centering
+  \begin{ruledtabular}
+    \begin{tabular}{|c|c|c|c|}
+      Sample name & Image type & Dimensions & Image resolution ($\mu m$) \\
+      \hline
+      Sandstone 1 & XCT & $500 \times 500 \times 500$ & X \\
+      Sandstone 2 & XCT & $500 \times 500 \times 500$ & X \\
+      Sandstone 3 & XCT & $500 \times 500 \times 500$ & X \\
+      Carbonate 1 & XCT & $500 \times 500 \times 500$ & X \\
+      Carbonate 2 & XCT & $500 \times 500 \times 500$ & X \\
+      Carbonate 3 & XCT & $500 \times 500 \times 500$ & X \\
+      Sandstone 4 & SEM & $1280 \times 869$ & X \\
+      Sandstone 5 & SEM & $1280 \times 869$ & X \\
+      Carbonate 4 & SEM & $1024 \times 691$ & X \\
+      Carbonate 5 & SEM & $1024 \times 691$ & X \\
+      Carbonate B1 & SEM & $1024 \times 691$ & X \\
+      Carbonate B2 & SEM & $1024 \times 691$ & X
+    \end{tabular}
+  \end{ruledtabular}
+  \caption{Summary of samples used for calculation of surface correlation
+    functions.}
+  \label{tab:samples}
+\end{table*}
 
 \textcolor{red}{Are SEM from the same XCT or different samples?}
 
 \subsection{Surface correlation functions for the studied collection}
 On \cref{fig:real-data-xct} and \cref{fig:real-data-sem} we report computed
 $F_{SS}$ and $F_{SV}$ correlation functions for a variety of XCT and SEM images,
-respectively. All these cases satisfy our $C_{0.5}$ criterion and, thus, provide
-a possibility to interpret resulting CFs.
+respectively. Almost all these cases satisfy our $C_{0.5}$ criterion and, thus,
+provide a possibility to interpret resulting CFs.
+
+Images \cref{fig:carbonate-b1} and \cref{fig:carbonate-b2} fail to satisfy our
+$C_{0.5}$ criterion. It is possible to apply the magnification technique to
+improve $C_{0.5}$, but this lack physical meaning -- from our experience we can
+immediately tell that these rocks possess significant under-resolution porosity
+that would reveal itself on higher-resolution images. We discuss the strategies
+for correct evaluation of surface correlation functions for such porous media in
+\cref{sec:outline}.
 
 \textcolor{red}{We need to interpret the resulting surface CFs somehow - form
   the image i see that for higher resolution $F_{SS}$ seems to be lower, it is
@@ -899,15 +928,7 @@ a possibility to interpret resulting CFs.
   compute other corrfunctions, may be even $S_2$ will suffice to further explain
   what happens? Any other ideas on this matter?}
 
-Finally, we show the example of too corase carbonate rock images that fail in
-passing the $C_{0.5}$ criterion on \cref{fig:real-bad}. It is possible to apply
-the magnification technique to improve $C_{0.5}$, but this lack physical meaning
--- from our experience we can immediately tell that these rocks possess
-significant under-resolution porosity that would reveal itself on
-higher-resolution images. We discuss the strategies for correct evaluation of
-surface correlation functions for such porous media in \cref{sec:outline}.
-
-\begin{figure*}[t]
+\begin{figure*}[!pt]
   \centering
   \subfigure[Sandstone 1, $C_{0.5} = 0.938$]{
     \includegraphics[width=0.14\linewidth, frame]{images/sandstone1.png}
@@ -947,23 +968,31 @@ surface correlation functions for such porous media in \cref{sec:outline}.
   \label{fig:real-data-xct}
 \end{figure*}
 
-\begin{figure*}[t]
+\begin{figure*}[!pt]
   \centering
   \subfigure[Sandstone 4, $C_{0.5} = 0.931$]{
-    \includegraphics[width=0.2\linewidth, frame]{images/846-79_0009.png}
+    \includegraphics[width=0.14\linewidth, frame]{images/846-79_0009.png}
     \label{fig:sandstone4}}
   \hfill
   \subfigure[Sandstone 5, $C_{0.5} = 0.951$]{
-    \includegraphics[width=0.2\linewidth, frame]{images/859-12_0005.png}
+    \includegraphics[width=0.14\linewidth, frame]{images/859-12_0005.png}
     \label{fig:sandstone5}}
   \hfill
   \subfigure[Carbonate 4, $C_{0.5} = 0.931$]{
-    \includegraphics[width=0.2\linewidth, frame]{images/C1-1-g6_010.png}
+    \includegraphics[width=0.14\linewidth, frame]{images/C1-1-g6_010.png}
     \label{fig:carbonate4}}
   \hfill
   \subfigure[Carbonate 5, $C_{0.5} = 0.931$]{
-    \includegraphics[width=0.2\linewidth, frame]{images/C3-3-G0 (32).png}
+    \includegraphics[width=0.14\linewidth, frame]{images/C3-3-G0 (32).png}
     \label{fig:carbonate5}}
+  \hfill
+  \subfigure[Carbonate B1, $C_{0.5} = 0.841$]{
+    \includegraphics[width=0.14\linewidth, frame]{images/C6-1-2-G2_019.png}
+    \label{fig:carbonate-b1}}
+  \hfill
+  \subfigure[Carbonate B2, $C_{0.5} = 0.815$]{
+    \includegraphics[width=0.14\linewidth, frame]{images/C6-1-2-G2_024.png}
+    \label{fig:carbonate-b2}}
   \vskip\baselineskip
   \subfigure[Surface-surface function]{
     \includegraphics[width=0.475\linewidth]{images/SEM-ss.png}
@@ -973,21 +1002,11 @@ surface correlation functions for such porous media in \cref{sec:outline}.
     \includegraphics[width=0.475\linewidth]{images/SEM-sv.png}
     \label{fig:plot-sv-real-sem}}
   \caption[]{Examples of surface correlation functions evaluated for SEM images
-    of real porous media. \textcolor{red}{add frames for the images, please}}
+    of real porous media. Surface functions for \cref{fig:carbonate-b1} and
+    \cref{fig:carbonate-b2} are not shown because these images do not satisfy
+    our quality criterion.}
   \label{fig:real-data-sem}
 \end{figure*}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.475\linewidth]{images/C6-1-2-G2_019.png}
-  \includegraphics[width=0.475\linewidth]{images/C6-1-2-G2_024.png}
-  \caption[]{Examples of carbonate images which do not pass $C_{0.5}$ criterion
-    with $C_{0.5} < 0.9$ -- they obviously are of too coarse resolution and
-    possess singificant under-resolution porosity. \textcolor{red}{Add that
-    those are Carbonate 6 and 7 and their criteria C0.5 like on all previous
-    figures}}
-  \label{fig:real-bad}
-\end{figure}
 
 \subsection{Computational efficiency and robustness}
 \textcolor{red}{Report some results for our 2D and 3D samples: CPU and GPU?
