@@ -428,8 +428,7 @@ images.
 \begin{figure}
   \centering \includegraphics[width=\linewidth]{images/algo.png}
   \caption{Schematic example of the algorithm for computation of surface
-    functions (2D case is considered for visibility). \textcolor{red}{I need to
-      re-work this one, need original images from Vasya (Kirill).}}
+    functions (2D case is considered for visibility).}
   \label{fig:stages}
 \end{figure}
 
@@ -633,14 +632,13 @@ non-negligible thickness -- i.~e. the difference between real ``continuous''
 interface versus ``digital'' interface (\cref{fig:scheme}). It is logical to
 assume that with increasing spatial resolution the influence of this thickness
 will diminish. This is exactly what we observe on \cref{fig:scaling-alltogether}
-(\textcolor{red}{upper row}) where increasing disk discretization leads to
-convergence with analytical solution; the accuracy of the computed CFs is almost
-perfect for discretization of about 62 pixels for each disk's diameter. A
-natural question arises: ``Is there a criterion of image quality (resolution)
-that allows to predict the quality of surface CFs evaluation from digital
-images?''. Turns out there is a possibility to establish such an empirical
-criterion based on spectral analysis of input images and \cref{sec:crit} will
-provide all necessary details.
+where increasing disk discretization leads to convergence with analytical
+solution; the accuracy of the computed CFs is almost perfect for discretization
+of about 62 pixels for each disk's diameter. A natural question arises: ``Is
+there a criterion of image quality (resolution) that allows to predict the
+quality of surface CFs evaluation from digital images?''. Turns out there is a
+possibility to establish such an empirical criterion based on spectral analysis
+of input images and \cref{sec:crit} will provide all necessary details.
 
 \subsection{Convergence of correlation functions with increasing resolution}
 \label{sec:value-noise}
@@ -673,12 +671,11 @@ Here $n$ is a parameter called the number of octaves. A thesholded noise is then
 where $\Theta(x)$ is the Heaviside step function. A generalization for higher
 dimensionality is constructed using the sample principle. An example of
 thesholded value noise with three octaves is depicted on
-\cref{fig:disks-noise} (\textcolor{red}{lower row}). Correlation functions
-calculated for the noise with $n = 3$ at different resolutions are on
-\cref{fig:scaling-alltogether}. If we calculate surface-surface and surface-void
-correlation functions for these images and scale them as described above, we
-again converge to some ``true'' correlation functions for continuous function
-$f$.
+\cref{fig:disks-noise}. Correlation functions calculated for the noise with
+$n = 3$ at different resolutions are on \cref{fig:scaling-alltogether}. If we
+calculate surface-surface and surface-void correlation functions for these
+images and scale them as described above, we again converge to some ``true''
+correlation functions for continuous function $f$.
 
 \subsection{Effects of image magnification}
 \label{sec:magnify}
