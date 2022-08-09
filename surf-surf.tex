@@ -43,29 +43,35 @@
   discrete digital images}
 
 \begin{abstract}
-  Pore-scale modelling based on the 3D structural information of porous
-  materials has enournous potential in assessing physical properties beyond the
-  capabilities of laboratiry methods. Such capabilities are pricely in terms of
-  computational expenses - this limits the applicability of the direct
-  simulations to a small volume and requires high performance computational
-  resources, espeically for multi-phase flow simulations. The only pore-scale
-  technique capable of dealing with large representative volumes of porous
-  samples is pore-network (PNM) based modelling. The problem of PNM approach is
-  that 3D pore geometry first needs to be simplified into a graph of pores and
-  throats that conserve topological and geometrical properties of the original
-  3D image. While a lot of progress was achieved in terms of geometry
-  representation, no methodology provides full conservation of the topological
-  features of the pore structure.  In this paper we present a pore-network
-  extraction algorithm for binary 3D images based on discrete Morse theory and
-  persistent homology that by design targets topology preservation. In addition
-  to methdological developments, we also clarify the relationship between
-  topological characteristics of constructed Morse chain complex and
-  pore-network elements. We show, that the Euler numbers calculated for PNMs
-  based on our methodology coincide with those obtained using the direct
-  topological analysis. The characteristics of extracted pore-network are
-  calculated for several 3D porous binary images and compared with the results
-  of maximum inscribed balls-based, watershed-based and hybrid approach to
-  support our methdology.
+  Correlation functions (CFs) are universal structural descriptors;
+  surface-surface $F_{ss}$ and surface-void $F_{sv}$ CFs are subset containing
+  additional information about the interface between the phases within a binary
+  material. The description of the interface between pores and solids in porous
+  media is of particular importance and recently Ma and Torquato \cite{ma2018SS}
+  proposed an elegant way to compute these functions for a wide variety of
+  cases. However, their "continuous" approach is not always applicable to
+  digital experimental 2D and 3D images of porous media as obtained using X-ray
+  tomography or scanning electron microscopy due to non-singularities in
+  chemical composition or local solid material's density, and partial volume
+  effects. In this paper we propose to use edge-detecting filters to compute
+  surface CFs in the "digital" fashion directly in the images. Computed this
+  way, surface correlation functions are the same as analytically known for
+  Poisson disks and spheres in case the resolution of the image is
+  adequate. Based on the multi-scale image analysis we developed a $C_{0.5}$
+  criterion that can predict if the imaging resolution is enough to make an
+  accurate evaluation of the surface CFs. We also showed that in case that the
+  input image contains all major features, but do not pass the $C_{0.5}$
+  criterion, it is possible with the help of image magnification to sample CFs
+  almost similar to those obtained for high-resolution image of the same
+  structure with high $C_{0.5}$. The computational framework as developed here
+  is open source and available within the \code{CorrelationFunctions.jl} package
+  developed by our group. Our "digital" approach was applied to wide variety of
+  real porous media images of different quality. We discuss critical aspects of
+  surface correlation functions computations as related to different
+  applications. The developed methodology allows applying surface CFs to
+  describe the structure of porous materials based on their experimental images
+  and enhance stochastic reconstructions or super-resolution procedures, or
+  serve as an efficient metrics in machine learning applications.
 \end{abstract}
 \keywords {3D images; correlation functions; surface-surface function;
   surface-void function; image analysis; image scaling}
@@ -73,7 +79,8 @@
 \maketitle
 
 \section{Introduction}
-Correlation functions (CFs) are invaluable universal descriptors of structure
+\label{sec:intro}
+Correlation functions are invaluable universal descriptors of structure
 and in this context are utilized in a multitude of scientific disciplines:
 material sciences \cite{Cecen,chen2022quantifying}, rock
 \cite{ledesma2018effect} and soil physics
@@ -674,6 +681,7 @@ again converge to some ``true'' correlation functions for continuous function
 $f$.
 
 \subsection{Effects of image magnification}
+\label{sec:magnify}
 As we have just observed for analytical Poisson disks and arbitrary structures
 based on thresholded value noise, with increasing resolution (or in other words
 -- descreasing coarsedness) of the image, surface correlation functions converge
@@ -1009,6 +1017,7 @@ for correct evaluation of surface correlation functions for such porous media in
 \end{figure*}
 
 \subsection{Computational efficiency and robustness}
+\label{sec:compute}
 \textcolor{red}{Report some results for our 2D and 3D samples: CPU and GPU?
   Somewhat briefly is enough. Make CPU and GPU graphs with wall times, including
   the Matlab code for 2D images (we should somehow normilize the results for
@@ -1032,20 +1041,108 @@ for correct evaluation of surface correlation functions for such porous media in
 
 \section{Discussion and outline}
 \label{sec:outline}
-Our criterion works only for image without subresolution posity. One can compare
-SAS vs. surface CFs to assess invisible interfaces!
+The "digital" approach for applications to real XCT and SEM images as developed
+in this paper has some important limitations. Namely, the magnification-based
+correction of coarse images (\cref{sec:magnify}) or the $C_{0.5}$ criterion
+(\cref{sec:crit}) provide accurate surface correlation functions only in case
+the under-resolution porosity is absent in the image. This means that accurate
+CFs can be sampled only for the case that with increasing resolution no new
+details appear on the image. The ideal imaging resolution is not known a priory
+and, thus, can not be assessed with $C_{0.5}$. For sandstones, we expect
+accurate surface CFs evaluation, but for carbonates on \cref{fig:carbonate-b1}
+and \cref{fig:carbonate-b2} the presence of unresolved porosity is expected. For
+other carbonates such as Carbonates 1-3 the presence of such porosity is likely,
+and for Carbonates 4-5 the resolution is probably optimal -- however, both of
+these hypotheses needs to be tested by imaging with a higher resolution. Another
+way would be to compare "digital" CFs with those obtained experimentally using
+small angle scattering (note that current generation synchrotrons are operating
+in the limit $\lesssim 1 \mu$ resolution). On the other hand, the surface CFs we
+obtain are correct under the assumption of no sub-resolution details. This is an
+important achievement, as the problem of under-resolution porosity can be then
+solved by multi-scale image analysis \cite{moctezuma2002,SciRep1}.
 
-Exact vs. for-reconstruction computation of surface CFs
+Considering the accuracy of the magnification procedure, it is also closely
+connected to the under-resolution porosity problem. On \textcolor{red}{fig.new6}
+it was clear that magnification can result in correct values of surface CFs, but
+for $F_{SS}$ some important (sub-resolution) information is simply not
+available. We argue that this unfortunate downside can be potentially mitigated
+by higher-resolution imaging of the interface in question with subsequent
+correction of the magnified surface-surface function. Another interesting
+approach would be to relate the $F_{SS}$ to some roughness coefficient that
+could change with time due to, for example, reactive transport within the pores
+\cite{godinho2016,noiriel2021,prokhorov2022} or due to mechanical load %\cite{}%
+\textcolor{red}{Lesha Kh, please add 1-3 papers of your choice!}. Thus, in
+conjunction with high-resolution imaging $F_{SS}$ and $F_{SV}$ could serve as
+excellent descriptors of surface change dynamics \cite{chen2022}.
 
-Our way it is easy to implement higher-order statistics computations, such as
-multiple-point surface-surface correlation functions.
+We described two ways to extract the interface to compute surface CFs -- "naive"
+approach based on distance map transform, and using edge-detecting (Sobel)
+filter. While we showed that the latter approach is much more accurate (e.g.,
+\cref{fig:sobel-vs-distance-map}), the naive one is still useful. In case we
+want to utilize $F_{SS}$ and $F_{SV}$ for stochastic reconstructions
+\cite{Y-T,JiaoPNAS,karsaninaPRL} we advocate the usage of distance map
+transform; moreover, the choice of inner or outer interface
+(\cref{fig:interface-extraction}) is not important. The reason is the procedure
+of CFs update during the simulated annealing purpose. The optimization of the
+filter-based approach is more involved and requires updates of the filter within
+some area first, and then local CFs recalculations. On the other hand, the naive
+approach allows to utilize the classical straightforward and extremely efficient
+technique \cite{rozman2001}. Considering that the exact values of the CFs are
+not important, the usage of distance maps introduces no inconsistencies, but
+rather improves performance.
 
-Discuss super-resolution to improve accuracy of surface functions computation
-Explain that ``digital'' is better than ``continuous''.
+In addition to fundamental XCT and SEM images acquisition problems (such
+inhomogeneous chemical and density of the solid phase and partial volume
+effects), as discussed in \cref{sec:intro}, the "digital" approach to evaluate
+surface correlation functions enjoys some additional advantages. As
+\cref{sec:compute} demonstrated, digital computations can be fast -- this can be
+achieved by FFT on modern GPU hardware, or by vectorized linear segment scanning
+\cite{EPL1}. In addition to efficient computations, digital methods allow
+efficient computations of higher order statistics, such as n-point correlation
+functions \cite{malmir2018}. Such efficiency and flexibility in computations is
+not available for "continuous" approach. This statement is by no means a
+critique of such an approach, as it allows to compute the exact surface CFs in
+cases when the structure can be described by some continuous function, e.g.,
+Gaussian random field \cite{ma2018SS}. Aforementioned computational efficiency
+opens numerous way to apply surface correlation  functions in description of
+real surfaces, surface structural dynamics and establishes them as universal
+interface descriptors. As such, $F_{SS}$ and $F_{SV}$ can serve as metrics in
+deep learning application for stochastic reconstructions and especially
+super-resolution, e.g., \cite{chen2020super,janssens2020,karimpouli2022}, or can
+be, likely, even incorporated into the cost function during training on modern
+GPUs.
 
 \section{Summary}
 \label{sec:summary}
-Our summary says
+In this contribution we proposed a computationally efficient and very flexible
+"digital" framework to evaluate surface correlation functions for XCT and SEM
+images of real porous media and materials. The methodology not only allows to
+compute the full correlation maps in addition to directional or ensemble average
+CFs, but also does this on both CPU and GPU architectures. The code to perform
+all computations is fully available as a Jupiter notebook (see Supplementary
+Materials); moreover, the full functionality is now a part of the freely
+available \code{CorrelationFunctions.jl} package. Based on the computed $F_{SS}$
+and $F_{SV}$ functions for a variety of artificial and real XCT/SEM digital
+images we were able to conclude:
+\begin{enumerate}
+  \item On digital images edge-detection filters can be utilized to effectively
+    extract the interface for surface CFs computations.
+  \item It is possible to use digital images as a foundation for robust surface
+    correlation functions evaluation in case their spatial resolution is
+    adequate.
+  \item It is possible to establish $C_{0.5}$ criterion to evaluate if the
+    quality of the image at hand is adequate; for artificial images passing this
+    criterion the analytically known and computed CFs are similar.
+  \item In case the $C_{0.5}$ criterion is below the desired value, one can
+    utilize image magnification (e.g., in the form of bicubic interpolation) to
+    increase the image resolution and achieve the necessary $C_{0.5}$ criterion
+    -- in this latter case the surface CFs computed from the magnified image
+    reach high accuracy.
+\end{enumerate}
+The developed methodology allows applying surface CFs to describe the structure
+of porous materials based on their experimental images and enhance stochastic
+reconstructions or super-resolution procedures, or serve as an efficient metrics
+in machine learning applications.
 
 \section{Acknowledgments}
 This research was supported by the Russian Science Foundation grant
