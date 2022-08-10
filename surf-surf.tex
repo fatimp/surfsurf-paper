@@ -1015,6 +1015,23 @@ for correct evaluation of surface correlation functions for such porous media in
 
 \subsection{Computational efficiency and robustness}
 \label{sec:compute}
+We measured execution times of \code{Map.surfsurf} and \code{Map.surfvoid}
+functions from our \code{CorrelationFunctions.jl} package which are
+implementation of our algorithms in Julia language. The hardware we used is
+Intel Xeon Gold 6248R CPU with YYY RAM and Nvidia GeForce RTX 3090 GPU. Input
+data consists of 2D and 3D square bit arrays with side varying from 1000 to
+10000 with step 1000 (2D case) or from 100 too 1000 with step 100 (3D case). The
+execution times are on \cref{fig:exec-times}. As our video RAM is limited the
+GPU can process three dimensional arrays with dimensions no more than
+$700 \times 700 \times 700$. A speedup from use of GPU is about 30 times.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\linewidth]{images/exec-time.png}
+  \caption[]{Execution times of our algorithms for 2D and 3D input.}
+  \label{fig:exec-times}
+\end{figure}
+
 \textcolor{red}{Report some results for our 2D and 3D samples: CPU and GPU?
   Somewhat briefly is enough. Make CPU and GPU graphs with wall times, including
   the Matlab code for 2D images (we should somehow normilize the results for
