@@ -207,7 +207,7 @@ function produce_kernel_plot!()
 
     xlabel(raw"$r$")
     ylabel(raw"$F_{ss}(r)$")
-    legend(["Theory", "Our filter", "Sobel", "Scharr", "Bickley", "Prewitt",
+    legend(["Theory", "Edge detection filter", "Sobel", "Scharr", "Bickley", "Prewitt",
             "Ando3", "Ando4", "Ando5"])
     xlim([0, 400])
     ylim([0, 0.00004])
