@@ -19,6 +19,8 @@ export gradient, distance_map_edge, average,
     produce_maps!,
     produce_fucking_plots!
 
+safesave(name, shit) = safesave(name, clamp.(shit, 0, 1))
+
 function crosscorr(x :: AbstractArray, y :: AbstractArray)
     fx = fft(x)
     fy = fft(y)
@@ -33,17 +35,7 @@ function array_with_zero_based_indices(array :: Array)
     return OffsetArray(array, ax)
 end
 
-function reflect(arr :: AbstractArray{T}) where T <: Real
-    ft = arr |> fft |> array_with_zero_based_indices
-
-    for idx in CartesianIndices(ft)
-        ft[idx] = (-1)^(idx |> Tuple |> sum) * ft[idx]
-    end
-
-    return ft.parent |> ifft |> real
-end
-
-function gradient(arr :: AbstractMatrix, kernel = KernelFactors.sobel)
+function gradient(arr :: AbstractMatrix, kernel)
     x, y = imgradients(arr, kernel)
     return sqrt.(x.^2 + y.^2)
 end
@@ -76,10 +68,10 @@ function produce_maps!()
     Random.seed!(1)
     img = gendisks(1000, 10, 0.002)
 
-    iface = img |> gradient
+    iface = img |> Utilities.extract_edges
     void  = img .== 0
-    ss    = iface |> autocorr |> reflect
-    sv    = crosscorr(iface, void) |> reflect
+    ss    = iface |> autocorr |> fftshift
+    sv    = crosscorr(iface, void) |> fftshift
 
     figure(figsize = (6, 6), dpi = 300)
     axis("off")
@@ -128,11 +120,11 @@ end
 function produce_fucking_graphics!()
     Random.seed!(1)
     img = gendisks(1000, 10, 0.002)
-    save("surfsurf-paper/images/original.png", img[1:100, 1:100])
+    safesave("surfsurf-paper/images/original.png", img[1:100, 1:100])
 
     function plot_it!(fns)
         interfaces = map(fn -> fn(img), fns)
-        cfss = interfaces .|> autocorr .|> reflect
+        cfss = interfaces .|> autocorr .|> fftshift
         cf  = reduce(+, cfss) / length(cfss)
         xs, ys = average(cf)
         plot(xs, ys, linewidth = 2.0)
@@ -141,7 +133,7 @@ function produce_fucking_graphics!()
 
     figure(figsize = (10, 9), dpi = 300)
     rc("font", size = 18)
-    xs, cfs = plot_it!([gradient])
+    xs, cfs = plot_it!([Utilities.extract_edges])
     xs, cfd = plot_it!([distance_map_edge])
     xs, cfd = plot_it!([distance_map_edge ∘ (.!)])
     xs, cfd = plot_it!([distance_map_edge,
@@ -150,7 +142,7 @@ function produce_fucking_graphics!()
     plot(xs, th.(xs), linewidth = 2.0)
     xlabel(raw"$r$")
     ylabel(raw"$F_{ss}(r)$")
-    legend(["Sobel kernel",
+    legend(["Edge detection filter",
             "Distance transform (outer border)",
             "Distance transform (inner border)",
             "Distance transform (mean)",
@@ -158,15 +150,15 @@ function produce_fucking_graphics!()
     xlim([0, 40])
     ylim([0, 0.03])
     savefig("surfsurf-paper/images/Fss_mean_dir.png")
-    save("surfsurf-paper/images/distance_map.png", img[1:100, 1:100] |> distance_map_edge)
-    save("surfsurf-paper/images/sobel.png", img[1:100, 1:100] |> gradient)
+    safesave("surfsurf-paper/images/distance_map.png", img[1:100, 1:100] |> distance_map_edge)
+    safesave("surfsurf-paper/images/sobel.png", img[1:100, 1:100] |> Utilities.extract_edges)
 end
 
 function produce_map_vs_dir_plot!()
     Random.seed!(1)
     img = gendisks(1000, 10, 0.002)
-    cf  = img |> gradient |> autocorr
-    cfr = cf  |> reflect
+    cf  = img |> Utilities.extract_edges |> autocorr
+    cfr = cf  |> fftshift
     xs, ys = average(cfr)
     th(x)  = ss_theory(x, 10, 0.002)
 
@@ -200,16 +192,22 @@ function produce_kernel_plot!()
     ticklabel_format(axis = "y", scilimits = (0, 0))
     plot(0:400, th.(0:400))
 
+    let
+        cf = img |> Map.surfsurf |> fftshift
+        xs, ys = average(cf)
+        plot(xs, ys)
+    end
+
     for kernel in kernels
         gr(x)  = gradient(x, kernel)
-        cf     = img |> gr |> autocorr |> reflect
+        cf     = img |> gr |> autocorr |> fftshift
         xs, ys = average(cf)
         plot(xs, ys)
     end
 
     xlabel(raw"$r$")
     ylabel(raw"$F_{ss}(r)$")
-    legend(["Theory", "Sobel", "Scharr", "Bickley", "Prewitt",
+    legend(["Theory", "Our filter", "Sobel", "Scharr", "Bickley", "Prewitt",
             "Ando3", "Ando4", "Ando5"])
     xlim([0, 400])
     ylim([0, 0.00004])
@@ -223,7 +221,7 @@ function produce_another_comparison!()
 
     function plot_it!(fns)
         interfaces = map(fn -> fn(img), fns)
-        cfss = interfaces .|> autocorr .|> reflect
+        cfss = interfaces .|> autocorr .|> fftshift
         cf  = reduce(+, cfss) / length(cfss)
         xs, ys = average(cf)
         plot(xs, ys, linewidth = 2.0)
@@ -232,7 +230,7 @@ function produce_another_comparison!()
 
     figure(figsize = (10, 8), dpi = 300)
     rc("font", size = 18)
-    xs = plot_it!([gradient])
+    xs = plot_it!([Utilities.extract_edges])
     xs = plot_it!([distance_map_edge])
     xs = plot_it!([distance_map_edge ∘ (.!)])
     xs = plot_it!([distance_map_edge,
@@ -240,7 +238,7 @@ function produce_another_comparison!()
     plot(xs, th.(xs), linewidth = 2.0)
     xlabel(raw"$r$")
     ylabel(raw"$F_{ss}(r)$")
-    legend(["Sobel",
+    legend(["Edge detection filter",
             "Distance map (outer)",
             "Distance map (inner)",
             "Distance map (mean)",
