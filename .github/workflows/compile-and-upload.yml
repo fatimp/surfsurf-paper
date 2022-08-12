@@ -11,17 +11,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Compile LaTeX document (stage 1)
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: surf-surf.tex
-      - name: Run bibtex
-        uses: dante-ev/latex-action@latest
-        with:
-          root_file: surf-surf.aux
-          compiler: bibtex
-          args:
-      - name: Compile LaTeX document (stage 2)
+      - name: Compile LaTeX document
         uses: dante-ev/latex-action@latest
         with:
           root_file: surf-surf.tex
