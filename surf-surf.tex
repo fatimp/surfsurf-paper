@@ -469,15 +469,41 @@ image) and $D(\mathbf{x})$ is evaluated using either \cref{eq:dist-outer} or
 \cref{eq:dist-inner}. When $D = D_i$ we call the resulting interface
 ``the inner interface'' and when $D = D_o$ we call it ``the outer interface''.
 
-\textit{Image filtering}.  This method creates a grayscale image of the
-interface with the help of the edge-detecting filter. We use Sobel operator $S$
-to detect edges of the image (other edge detecting filters are also considered,
-see below), so $M = S$ in algorithms in \cref{sec:general}. We calculate
-$\|S(A')\|$ (recollect that $A' = I^{(void)}(A)$ where $A$ is the input image)
-element-wise ($\|\cdot\|$ denotes the usual norm on Euclidean space). This norm
-can be interpreted as the probability that a point in $A$ belongs to the
-interface. In a digitized image $\|S(A')\|$ can be represented as an array of
-floating point numbers having the same shape as an original image $A$.
+\textit{Image filtering}. This method creates a grayscale image of the interface
+with the help of the edge-detecting filter. The filter works by convolving the
+input image with signals \cref{eq:filter-2d} for 2D case or
+\cref{eq:filter-3d-1}-\cref{eq:filter-3d-3} for 3D case.
+\begin{align}
+  F &= \frac{\sqrt{2}}{9} \left[
+    \begin{array}{ccc}
+        1 & 1 & 1 \\
+        1 & -8 & 1 \\
+        1 & 1 & 1
+      \end{array}
+    \right] \label{eq:filter-2d} \\
+  F_{ij0} &= \frac{\sqrt{2}}{27} \left[
+    \begin{array}{ccc}
+        1 & 1 & 1 \\
+        1 & 1 & 1 \\
+        1 & 1 & 1
+    \end{array}
+    \right] \label{eq:filter-3d-1} \\
+  F_{ij1} &= \frac{\sqrt{2}}{27} \left[
+    \begin{array}{ccc}
+      1 & 1 & 1 \\
+      1 & -26 & 1 \\
+      1 & 1 & 1
+    \end{array}
+    \right] \label{eq:filter-3d-2} \\
+  F_{ij2} &= F_{ij0} \label{eq:filter-3d-3}
+\end{align}
+Convolution can be easily parallelized on GPU. After the convolution step is
+finished we take absolute values of the result as an approximation for $M(A')$
+(recollect that $A' = I^{(void)}(A)$ where $A$ is the input image). In physical
+sense the result of this procedure is proportional to probability with which a
+pixels belongs to the interface. From now on we will call filter $F$ simply
+``edge detection filter'' when no confusion with other edge detection filters
+arises.
 
 \subsection{Computing correlation}
 \label{sec:cross-comp}
@@ -707,8 +733,8 @@ exception of nearest-neighbor approach. As an example, \cref{fig:resized} shows
 the images of overlapping disks with almost the same surface-surface and
 surface-void functions. The values of CFs are almost identical for
 high-resolution and magnified images; the only flaw being the difference in
-$F_{SS}$ for resized and digitized images due to pixelization of the interface
-(the absence of "noise" on $F_{SS}$ for the rescaled image).
+$F_{ss}$ for resized and digitized images due to pixelization of the interface
+(the absence of "noise" on $F_{ss}$ for the rescaled image).
 
 \begin{figure*}[!pt]
   \centering
@@ -802,9 +828,9 @@ $C_{0.5}$ decays fast with a decline in the image resolution as demostrated in
   \centering
   \includegraphics[width=\linewidth]{images/dm_sobel.png}
   \caption{Surface-surface correlation function calculated with different
-    interface extraction methods (Sobel to the left, and distance map to the
-    right on the insets). Discretization of each disk is 20 pixels per diameter,
-    the size is $1000 \times 1000$ pixels.}
+    interface extraction methods (Edge detection filter to the left, and
+    distance map to the right on the insets). Discretization of each disk is 20
+    pixels per diameter, the size is $1000 \times 1000$ pixels.}
   \label{fig:interface-extraction}
 \end{figure}
 
@@ -813,14 +839,14 @@ map approach. Surface-surface functions for overlapping Poisson disks
 ($R = 10,\ \lambda = 2 \cdot 10^{-3}$ on image with dimensions of $1000 \times 1000$
 pixels) computed with different methods of interface extraction are shown on
 \cref{fig:interface-extraction}. These methods include image filtering with
-Sobel operator and interface extraction with distance map. When using distance
-map both outer (\cref{eq:dist-outer}) and inner (\cref{eq:dist-inner})
-interfaces are used to compute the correlation function. An average over the
-last two functions is also shown. Sobel kernel clearly outperforms the distance
-map approach. However, the result on \cref{fig:interface-extraction} could be
-related to the resolution of studied image. If we now increase the disretization
-of the disks and, thus, the image resolution
-($R = 70,\ \lambda = 3 \cdot 10^{-6}$ on image with dimensions of
+filter \cref{eq:filter-2d}-\cref{eq:filter-3d-3} and interface extraction with
+distance map. When using distance map both outer (\cref{eq:dist-outer}) and
+inner (\cref{eq:dist-inner}) interfaces are used to compute the correlation
+function. An average over the last two functions is also shown. Edge detection
+filter clearly outperforms the distance map approach. However, the result on
+\cref{fig:interface-extraction} could be related to the resolution of studied
+image. If we now increase the disretization of the disks and, thus, the image
+resolution ($R = 70,\ \lambda = 3 \cdot 10^{-6}$ on image with dimensions of
 $5000 \times 5000$ pixels) we get the result as presented on
 \cref{fig:sobel-vs-distance-map}. In this case the image filtering method again
 collapses to an analytical solution whilst the distance map method failed to do
@@ -829,7 +855,7 @@ filter in case of surface CFs evalution based on digital images.
 
 To demostrate the possibilities to compute directional surface correlation
 functions, on \cref{fig:direction-vs-map} we show a comparison of the ensemble
-$F_{SS}$ computed by averaging the full correlation map against the CF computed
+$F_{ss}$ computed by averaging the full correlation map against the CF computed
 along a single direction (the input image is isotropic Poisson disks from
 \cref{fig:interface-extraction}). As expected, less sampling results in more
 noise but in general conincide with analytical and ensemble average computed
@@ -838,7 +864,7 @@ CFs.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\linewidth]{images/sobel-vs-distance-map.png}
-  \caption{Comparison of Sobel filter and distance map approaches on
+  \caption{Comparison of edge detection filter and distance map approach on
     high-resolution image with 140 pixels per disk diameter, the size is
     $5000 \times 5000$ pixels. \textcolor{red}{Please, put in the inset image}}
   \label{fig:sobel-vs-distance-map}
@@ -848,25 +874,26 @@ CFs.
   \centering
   \includegraphics[width=\linewidth]{images/direction_and_map.png}
   \caption{The comparison of directional and ensemble averaged over the full map
-    $F_{SS}$ \textcolor{red}{Please, put in the inset image}.}
+    $F_{ss}$ \textcolor{red}{Please, put in the inset image}.}
   \label{fig:direction-vs-map}
 \end{figure}
 
-In addition to Sobel, there are plenty of other kernels for gradient evaluation
-\cite{bickley1948,prewitt1970,ando2000}. In total, we investigated Sobel, Ando,
-Sharr, Bickley and Prewitt filters. Their performance is almost the same
-(\cref{fig:kernels}). The errors against the analytical solution are very
-similar and the overall performance depends on the particular image. Therefore,
-it is difficult to recommend specific kernel; so, the choice of the Sobel kernel
-is purely due to the fact that this filter is a classical edge-detecting kernel
-implemented in libraries for all major programming languages.
+In addition to edge detection filter of our choice, there are plenty of other
+kernels for gradient evaluation \cite{bickley1948,prewitt1970,ando2000}. In
+total, we investigated Sobel, Ando, Sharr, Bickley and Prewitt filters. Their
+performance is almost the same (\cref{fig:kernels}). The errors against the
+analytical solution are very similar and the overall performance depends on the
+particular image. Therefore, it is difficult to recommend specific kernel; so,
+the choice of filter \cref{eq:filter-2d}-\cref{eq:filter-3d-2} is purely due to
+the fact that this filter is a classical edge-detecting kernel implemented in
+libraries for all major programming languages.
 
 \begin{figure}[ht]
   \centering \includegraphics[width=\linewidth]{images/kernels.png}
   \caption{Comparison of different edge-detecting filters in their ability to
     highlight the interface for surface-surface CFs computation (only the case
-    of $F_{SS}$ is shown due to similarity of the results for
-    $F_{SV}$). \textcolor{red}{input image inset}}
+    of $F_{ss}$ is shown due to similarity of the results for
+    $F_{sv}$). \textcolor{red}{input image inset}}
   \label{fig:kernels}
 \end{figure}
 
@@ -918,7 +945,7 @@ porosity for XCT) porosity. The details of the samples are provided in
 
 \subsection{Surface correlation functions for the studied collection}
 On \cref{fig:real-data-xct} and \cref{fig:real-data-sem} we report computed
-$F_{SS}$ and $F_{SV}$ correlation functions for a variety of XCT and SEM images,
+$F_{ss}$ and $F_{sv}$ correlation functions for a variety of XCT and SEM images,
 respectively. Almost all these cases satisfy our $C_{0.5}$ criterion and, thus,
 provide a possibility to interpret resulting CFs.
 
@@ -931,7 +958,7 @@ for correct evaluation of surface correlation functions for such porous media in
 \cref{sec:outline}.
 
 \textcolor{red}{We need to interpret the resulting surface CFs somehow - form
-  the image i see that for higher resolution $F_{SS}$ seems to be lower, it is
+  the image i see that for higher resolution $F_{ss}$ seems to be lower, it is
   due to lower desntiy of the interface on higher resolution images? Should we
   compute other corrfunctions, may be even $S_2$ will suffice to further explain
   what happens? Any other ideas on this matter?}
@@ -1079,22 +1106,22 @@ solved by multi-scale image analysis \cite{moctezuma2002,SciRep1}.
 Considering the accuracy of the magnification procedure, it is also closely
 connected to the under-resolution porosity problem. On \cref{fig:resized}
 it was clear that magnification can result in correct values of surface CFs, but
-for $F_{SS}$ some important (sub-resolution) information is simply not
+for $F_{ss}$ some important (sub-resolution) information is simply not
 available. We argue that this unfortunate downside can be potentially mitigated
 by higher-resolution imaging of the interface in question with subsequent
 correction of the magnified surface-surface function. Another interesting
-approach would be to relate the $F_{SS}$ to some roughness coefficient that
+approach would be to relate the $F_{ss}$ to some roughness coefficient that
 could change with time due to, for example, reactive transport within the pores
 \cite{godinho2016,noiriel2021,prokhorov2022} or due to mechanical load %\cite{}%
 \textcolor{red}{Lesha Kh, please add 1-3 papers of your choice!}. Thus, in
-conjunction with high-resolution imaging $F_{SS}$ and $F_{SV}$ could serve as
+conjunction with high-resolution imaging $F_{ss}$ and $F_{sv}$ could serve as
 excellent descriptors of surface change dynamics \cite{chen2022}.
 
 We described two ways to extract the interface to compute surface CFs -- "naive"
-approach based on distance map transform, and using edge-detecting (Sobel)
-filter. While we showed that the latter approach is much more accurate (e.g.,
+approach based on distance map transform, and using edge-detecting filter. While
+we showed that the latter approach is much more accurate (e.g.,
 \cref{fig:sobel-vs-distance-map}), the naive one is still useful. In case we
-want to utilize $F_{SS}$ and $F_{SV}$ for stochastic reconstructions
+want to utilize $F_{ss}$ and $F_{sv}$ for stochastic reconstructions
 \cite{Y-T,JiaoPNAS,karsaninaPRL} we advocate the usage of distance map
 transform; moreover, the choice of inner or outer interface
 (\cref{fig:interface-extraction}) is not important. The reason is the procedure
@@ -1121,7 +1148,7 @@ cases when the structure can be described by some continuous function, e.g.,
 Gaussian random field \cite{ma2018SS}. Aforementioned computational efficiency
 opens numerous way to apply surface correlation  functions in description of
 real surfaces, surface structural dynamics and establishes them as universal
-interface descriptors. As such, $F_{SS}$ and $F_{SV}$ can serve as metrics in
+interface descriptors. As such, $F_{ss}$ and $F_{sv}$ can serve as metrics in
 deep learning application for stochastic reconstructions and especially
 super-resolution, e.g., \cite{chen2020super,janssens2020,karimpouli2022}, or can
 be, likely, even incorporated into the cost function during training on modern
@@ -1136,8 +1163,8 @@ compute the full correlation maps in addition to directional or ensemble average
 CFs, but also does this on both CPU and GPU architectures. The code to perform
 all computations is fully available as a Jupiter notebook (see Supplementary
 Materials); moreover, the full functionality is now a part of the freely
-available \code{CorrelationFunctions.jl} package. Based on the computed $F_{SS}$
-and $F_{SV}$ functions for a variety of artificial and real XCT/SEM digital
+available \code{CorrelationFunctions.jl} package. Based on the computed $F_{ss}$
+and $F_{sv}$ functions for a variety of artificial and real XCT/SEM digital
 images we were able to conclude:
 \begin{enumerate}
   \item On digital images edge-detection filters can be utilized to effectively
