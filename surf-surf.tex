@@ -933,7 +933,9 @@ porosity for XCT) porosity. The details of the samples are provided in
       Carbonate 4 & SEM &  $1024 \times 691$ & 0.06 \\
       Carbonate 5 & SEM &  $1024 \times 691$ & 0.29 \\
       Carbonate B1 & SEM & $1024 \times 691$ & 0.57 \\
-      Carbonate B2 & SEM & $1024 \times 691$ & 1.09
+      Carbonate B2 & SEM & $1024 \times 691$ & 1.09 \\
+      Carbonate B3 & XCT & $500 \times 500 \times 500$ & 1.7 \\
+      Carbonate B4 & XCT & $500 \times 500 \times 500$ & 1.7
     \end{tabular}
   \end{ruledtabular}
   \caption{Summary of samples used for calculation of surface correlation
@@ -949,13 +951,12 @@ $F_{ss}$ and $F_{sv}$ correlation functions for a variety of XCT and SEM images,
 respectively. Almost all these cases satisfy our $C_{0.5}$ criterion and, thus,
 provide a possibility to interpret resulting CFs.
 
-Images \cref{fig:carbonate-b1} and \cref{fig:carbonate-b2} fail to satisfy our
-$C_{0.5}$ criterion. It is possible to apply the magnification technique to
-improve $C_{0.5}$, but this lack physical meaning -- from our experience we can
-immediately tell that these rocks possess significant under-resolution porosity
-that would reveal itself on higher-resolution images. We discuss the strategies
-for correct evaluation of surface correlation functions for such porous media in
-\cref{sec:outline}.
+Images on \cref{fig:real-data-bad} fail to satisfy our $C_{0.5}$ criterion. It is
+possible to apply the magnification technique to improve $C_{0.5}$, but this
+lack physical meaning -- from our experience we can immediately tell that these
+rocks possess significant under-resolution porosity that would reveal itself on
+higher-resolution images. We discuss the strategies for correct evaluation of
+surface correlation functions for such porous media in \cref{sec:outline}.
 
 \textcolor{red}{We need to interpret the resulting surface CFs somehow - form
   the image i see that for higher resolution $F_{ss}$ seems to be lower, it is
@@ -1014,18 +1015,10 @@ for correct evaluation of surface correlation functions for such porous media in
   \subfigure[Carbonate 4, $C_{0.5} = 0.931$]{
     \includegraphics[width=0.22\linewidth, frame]{images/C1-1-g6_010.png}
     \label{fig:carbonate4}}
-  \vskip\baselineskip
+  \hfill
   \subfigure[Carbonate 5, $C_{0.5} = 0.931$]{
     \includegraphics[width=0.22\linewidth, frame]{images/C3-3-G0 (32).png}
     \label{fig:carbonate5}}
-  \hfill
-  \subfigure[Carbonate B1, $C_{0.5} = 0.841$]{
-    \includegraphics[width=0.22\linewidth, frame]{images/C6-1-2-G2_019.png}
-    \label{fig:carbonate-b1}}
-  \hfill
-  \subfigure[Carbonate B2, $C_{0.5} = 0.815$]{
-    \includegraphics[width=0.22\linewidth, frame]{images/C6-1-2-G2_024.png}
-    \label{fig:carbonate-b2}}
   \vskip\baselineskip
   \subfigure[Surface-surface function]{
     \includegraphics[width=0.475\linewidth]{images/SEM-ss.png}
@@ -1035,10 +1028,28 @@ for correct evaluation of surface correlation functions for such porous media in
     \includegraphics[width=0.475\linewidth]{images/SEM-sv.png}
     \label{fig:plot-sv-real-sem}}
   \caption[]{Examples of surface correlation functions evaluated for SEM images
-    of real porous media. Surface functions for \subref{fig:carbonate-b1} and
-    \subref{fig:carbonate-b2} are not shown because these images do not satisfy
-    our quality criterion.}
+    of real porous media.}
   \label{fig:real-data-sem}
+\end{figure*}
+
+\begin{figure*}[!pt]
+  \centering
+  \subfigure[Carbonate B1, $C_{0.5} = 0.841$]{
+    \includegraphics[width=0.22\linewidth, frame]{images/C6-1-2-G2_019.png}
+    \label{fig:carbonate-b1}}
+  \hfill
+  \subfigure[Carbonate B2, $C_{0.5} = 0.815$]{
+    \includegraphics[width=0.22\linewidth, frame]{images/C6-1-2-G2_024.png}
+    \label{fig:carbonate-b2}}
+  \subfigure[Carbonate B3, $C_{0.5} = 0.912$]{
+    \includegraphics[width=0.22\linewidth, frame]{images/carbRNF1_500.png}
+    \label{fig:carbonate-b3}}
+  \subfigure[Carbonate B4, $C_{0.5} = 0.888$]{
+    \includegraphics[width=0.22\linewidth, frame]{images/carbRNF2_500.png}
+    \label{fig:carbonate-b4}}
+  \caption[]{Examples of XCT and SEM images which do not satisfy our $C_{0.5}$
+    criterion.}
+  \label{fig:real-data-bad}
 \end{figure*}
 
 \subsection{Computational efficiency and robustness}
@@ -1091,17 +1102,17 @@ the under-resolution porosity is absent in the image. This means that accurate
 CFs can be sampled only for the case that with increasing resolution no new
 details appear on the image. The ideal imaging resolution is not known a priory
 and, thus, can not be assessed with $C_{0.5}$. For sandstones, we expect
-accurate surface CFs evaluation, but for carbonates on \cref{fig:carbonate-b1}
-and \cref{fig:carbonate-b2} the presence of unresolved porosity is expected. For
-other carbonates such as Carbonates 1-3 the presence of such porosity is likely,
-and for Carbonates 4-5 the resolution is probably optimal -- however, both of
-these hypotheses needs to be tested by imaging with a higher resolution. Another
-way would be to compare "digital" CFs with those obtained experimentally using
-small angle scattering (note that current generation synchrotrons are operating
-in the limit $\lesssim 1 \mu$ resolution). On the other hand, the surface CFs we
-obtain are correct under the assumption of no sub-resolution details. This is an
-important achievement, as the problem of under-resolution porosity can be then
-solved by multi-scale image analysis \cite{moctezuma2002,SciRep1}.
+accurate surface CFs evaluation, but for carbonates on \cref{fig:real-data-bad}
+the presence of unresolved porosity is expected. For other carbonates such as
+Carbonates 1-3 the presence of such porosity is likely, and for Carbonates 4-5
+the resolution is probably optimal -- however, both of these hypotheses needs to
+be tested by imaging with a higher resolution. Another way would be to compare
+"digital" CFs with those obtained experimentally using small angle scattering
+(note that current generation synchrotrons are operating in the limit
+$\lesssim 1 \mu$ resolution). On the other hand, the surface CFs we obtain are
+correct under the assumption of no sub-resolution details. This is an important
+achievement, as the problem of under-resolution porosity can be then solved by
+multi-scale image analysis \cite{moctezuma2002,SciRep1}.
 
 Considering the accuracy of the magnification procedure, it is also closely
 connected to the under-resolution porosity problem. On \cref{fig:resized}
