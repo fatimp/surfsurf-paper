@@ -45,32 +45,34 @@
 \begin{abstract}
   Correlation functions (CFs) are universal structural descriptors;
   surface-surface $F_{ss}$ and surface-void $F_{sv}$ CFs are a subset containing
-  additional information about the interface between the phases. The description of the interface between pores and solids in porous
-  media is of particular importance and recently Ma and Torquato \cite{ma2018SS}
-  proposed an elegant way to compute these functions for a wide variety of
-  cases. However, their "continuous" approach is not always applicable to
-  digital experimental 2D and 3D images of porous media as obtained using X-ray
-  tomography or scanning electron microscopy due to non-singularities in
-  chemical composition or local solid material's density, and partial volume
-  effects. In this paper we propose to use edge-detecting filters to compute
-  surface CFs in the "digital" fashion directly in the images. Computed this
-  way, surface correlation functions are the same as analytically known for
-  Poisson disks and spheres in case the resolution of the image is
-  adequate. Based on the multi-scale image analysis we developed a $C_{0.5}$
-  criterion that can predict if the imaging resolution is enough to make an
-  accurate evaluation of the surface CFs. We also showed that in case when the
-  input image contains all major features, but do not pass the $C_{0.5}$
-  criterion, it is possible with the help of image magnification to sample CFs
-  almost similar to those obtained for high-resolution image of the same
-  structure with high $C_{0.5}$. The computational framework as developed here
-  is open source and available within the \code{CorrelationFunctions.jl} package
-  developed by our group. Our "digital" approach was applied to a wide variety of
-  real porous media images of different quality. We discuss critical aspects of
-  surface correlation functions computations as related to different
-  applications. The developed methodology allows applying surface CFs to
-  describe the structure of porous materials based on their experimental images
-  and enhance stochastic reconstructions or super-resolution procedures, or
-  serve as an efficient metrics in machine learning applications due to computationally effective GPU implementation.
+  additional information about the interface between the phases. The description
+  of the interface between pores and solids in porous media is of particular
+  importance and recently Ma and Torquato \cite{ma2018SS} proposed an elegant
+  way to compute these functions for a wide variety of cases. However, their
+  "continuous" approach is not always applicable to digital experimental 2D and
+  3D images of porous media as obtained using X-ray tomography or scanning
+  electron microscopy due to non-singularities in chemical composition or local
+  solid material's density, and partial volume effects. In this paper we propose
+  to use edge-detecting filters to compute surface CFs in the "digital" fashion
+  directly in the images. Computed this way, surface correlation functions are
+  the same as analytically known for Poisson disks and spheres in case the
+  resolution of the image is adequate. Based on the multi-scale image analysis
+  we developed a $C_{0.5}$ criterion that can predict if the imaging resolution
+  is enough to make an accurate evaluation of the surface CFs. We also showed
+  that in case when the input image contains all major features, but do not pass
+  the $C_{0.5}$ criterion, it is possible with the help of image magnification
+  to sample CFs almost similar to those obtained for high-resolution image of
+  the same structure with high $C_{0.5}$. The computational framework as
+  developed here is open source and available within the
+  \code{CorrelationFunctions.jl} package developed by our group. Our "digital"
+  approach was applied to a wide variety of real porous media images of
+  different quality. We discuss critical aspects of surface correlation
+  functions computations as related to different applications. The developed
+  methodology allows applying surface CFs to describe the structure of porous
+  materials based on their experimental images and enhance stochastic
+  reconstructions or super-resolution procedures, or serve as an efficient
+  metrics in machine learning applications due to computationally effective GPU
+  implementation.
 \end{abstract}
 \keywords {3D images; correlation functions; surface-surface function;
   surface-void function; image analysis; image scaling}
@@ -164,8 +166,11 @@ interface. All these and additional problems (such as, for example, experimental
 noise and artifacts from inverse Radon transform) arising during gray-scale
 image processing as related to image segmentation were extensively discussed
 elsewhere \cite{NNseg}.
-%In other words, simple thresholding of the grey-scale image to compute surface functions using the approach proposed in
-%\cite{ma2018SS} (their section V.C) may result in inaccurate surface identification and surface functions are not defined for grey-scale %images (due to possible sub-resolution porosity).
+%In other words, simple thresholding of the grey-scale image to compute surface
+%functions using the approach proposed in
+%\cite{ma2018SS} (their section V.C) may result in inaccurate surface
+%identification and surface functions are not defined for grey-scale %images
+%(due to possible sub-resolution porosity).
 Thus, we argue, that the usage of current
 state-of-the-art segmentation techniques is necessary prior to the conversion
 to a coarse-grained scalar field. Moreover, finding an intersection between a
@@ -193,14 +198,14 @@ two phases (we shall consider only pores and solids, but, obviously, the
 computations can be performed to multi-phase systems in the similar manner). The
 interface area has infinitesimal volume, but its location on the digital image
 is not easy due to the pixelization of the interface between the binary phases
-\cite{ma2018SS}. By adopting the interface width $\varepsilon$ = pixel/voxel size one can create
-a very crude approximation of the real interface, but the usage of interfaces
-between voxels ``as is'' leads to known problems in surface area and surface
-geometry evaluation, in application of 3D imaging for geometry and topology
-analysis \cite{AWR_PNM,PNM_Morse} or energy minimization problems
+\cite{ma2018SS}. By adopting the interface width $\varepsilon$ = pixel/voxel
+size one can create a very crude approximation of the real interface, but the
+usage of interfaces between voxels ``as is'' leads to known problems in surface
+area and surface geometry evaluation, in application of 3D imaging for geometry
+and topology analysis \cite{AWR_PNM,PNM_Morse} or energy minimization problems
 \cite{frank2018energy}. Another option would be to describe the boundaries
-between voxels with some curves, e.g., splines. This way it would be possible
-to perform surface CFs sampling by line intersection as described by Ma and
+between voxels with some curves, e.g., splines. This way it would be possible to
+perform surface CFs sampling by line intersection as described by Ma and
 Torquato \cite{ma2018SS}. While an exact boundary can be obtained for
 deterministic structures such as disk/sphere packings, splines would provide
 only a very approximate solution for the boundaries of arbitrary digitized
@@ -222,8 +227,10 @@ a number of reasons:
     as applied to digital pixel/voxel images.
   \item "Continuous" approach is expensive numerically, as it requires to find the
     intersections between a line and a curve.
-  \item Digital approach allows utilizing linear scan CFs computation or the Fast Fourier Transform (FFT) -- the latter is the fastest way
-    to evaluate full CF maps (not for all functions thought) and is very efficient on modern GPUs.
+  \item Digital approach allows utilizing linear scan CFs computation or the
+    Fast Fourier Transform (FFT) -- the latter is the fastest way to evaluate
+    full CF maps (not for all functions thought) and is very efficient on modern
+    GPUs.
 \end{enumerate}
 
 In this paper we build upon foundational work of Ma and Torquato \cite{ma2018SS}
@@ -296,16 +303,20 @@ correlation functions (for homogeneous and isotropic media straight away):
 
 The interface indicator function $M(x)$ is basically defined as infinity on the
 interface and zero elsewhere. Therefore, it is hard to directly compute
-$\langle M(x), M(x + r) \rangle$. We can replace the line of zero width and infinite value
-with a strip of width $\varepsilon$ and value $\frac{1}{\varepsilon}$: $M(x; \varepsilon)$.
-Then $F_{SS}(x; \varepsilon) = \langle M(x; \varepsilon), M(x + r; \varepsilon) \rangle$
+$\langle M(x), M(x + r) \rangle$. We can replace the line of zero width and
+infinite value with a strip of width $\varepsilon$ and value
+$\frac{1}{\varepsilon}$: $M(x; \varepsilon)$. Then
+$F_{SS}(x; \varepsilon) = \langle M(x; \varepsilon), M(x + r; \varepsilon) \rangle$
 is simply an intersection area of two strips -- original and shifted --
 multiplied by $(\frac{1}{\varepsilon})^2$.
 And with $\varepsilon \to 0 \Rightarrow F_{SS}(r; \varepsilon) \to F_{SS}(r)$.
 Area between two black dashed circles on \cref{fig:Fss-explained} represents
 $M(x; \varepsilon)$, red is for $M(x + r; \varepsilon)$; blue color marks the
-intersection area. The treatment of the interface in the case of $F_{SV}$ is similar, but this function is not auto-correlation, but rather cross-correlation of the interface with the void phase. More detailed information on two-point probability and
-surface correlation functions can be found in the comprehensive Torquato's book \cite{Torquato_book}.
+intersection area. The treatment of the interface in the case of $F_{SV}$ is
+similar, but this function is not auto-correlation, but rather cross-correlation
+of the interface with the void phase. More detailed information on two-point
+probability and surface correlation functions can be found in the comprehensive
+Torquato's book \cite{Torquato_book}.
 
 \begin{figure}
   \centering
@@ -380,7 +391,8 @@ speak of $F_{sv}$ function.
 While we present and compare a bunch of slightly different methods to evaluate
 surface CFs, they are all based on a single general algorithm for each surface
 function as described below ($A$ refers to the input 2D or 3D digital image, $M$
-is the interface between two phases, and $V$ is the image of the void phase only):
+is the interface between two phases, and $V$ is the image of the void phase
+only):
 
 $F_{SS}$ algorithm:
 \begin{algorithmic}[1]
@@ -411,12 +423,13 @@ $F_{SV}$ algorithm:
 The algorithm is very general and allows utilizing different techniques for
 interface extraction or computation of the correlations, as detailed below. The
 cross-correlation function is introduced in \cref{sec:cross-comp}. Consecutive
-stages of our method are shown in \cref{fig:stages}. The programming implementation details are provided in the \cref{ap:b_code}.
+stages of our method are shown in \cref{fig:stages}. The programming
+implementation details are provided in the \cref{ap:b_code}.
 
 \subsection{Interface extraction}
 We shall consider two methods for the interface extraction -- the first is a
-naive approach, while the second is the one we propose to routinely apply for XCT and SEM
-images analysis.
+naïve approach, while the second is the one we propose to routinely apply for
+XCT and SEM images analysis.
 
 \begin{figure*}[!pt]
   \centering
@@ -490,20 +503,22 @@ input image with signals in \cref{eq:filter-2d} for 2D case, or
     \right] \label{eq:filter-3d-2} \\
   F_{ij2} &= F_{ij0} \label{eq:filter-3d-3}
 \end{align}
-Such convolutions can be easily parallelized on GPU, and we do this by writing native Cuda code. After the convolution step is
-finished we take absolute values of the result as an approximation for $M(A')$
-(recalling that $A' = I^{(void)}(A)$ where $A$ is the input image). In physical
-sense the result of this procedure is proportional to the probability that a pixel/voxel under consideration
-belongs to the interface. From now on we shall call the filter $F$ simply
-``edge detection filter'', not to be confused with other edge detection filters
-that will be considered shortly.
+Such convolutions can be easily parallelized on GPU, and we do this by writing
+native Cuda code. After the convolution step is finished we take absolute values
+of the result as an approximation for $M(A')$ (recalling that $A' =
+I^{(void)}(A)$ where $A$ is the input image). In physical sense the result of
+this procedure is proportional to the probability that a pixel/voxel under
+consideration belongs to the interface. From now on we shall call the filter $F$
+simply ``edge detection filter'', not to be confused with other edge detection
+filters that will be considered shortly.
 
 \subsection{Computing correlations}
 \label{sec:cross-comp}
 Let us now describe the approach for the computation of cross-correlation
-function between two images $f$ and $g$. In the case of auto-correlation function
-we assume $f = g$. Algorithm is straightforward when boundary conditions are
-periodic. For non-periodic boundary conditions it is slightly more involved.
+function between two images $f$ and $g$. In the case of auto-correlation
+function we assume $f = g$. Algorithm is straightforward when boundary
+conditions are periodic. For non-periodic boundary conditions it is slightly
+more involved.
 
 \textit{Periodic boundary condition}
 \begin{algorithmic}[1]
@@ -549,7 +564,8 @@ line segment of length $r$, but this approach is more efficient on CPU as
 compared to GPU implementation here. If not stated otherwise, we report the
 ensemble averaged functions computed from the full map (assuming the isotropy of
 the input image). One can easily compute directional CFs
-\cite{jiao2014chawla,EPL1} using both segment scanning or from the correlation maps.
+\cite{jiao2014chawla,EPL1} using both segment scanning or from the correlation
+maps.
 
 \section{Application to synthetic images, verification and betterment of the methodology}
 \label{sec:results}
@@ -721,8 +737,8 @@ function as an indicator for the void phase provided the void phase is marked as
 \end{equation*}
 
 We found that all interpolation methods are good for resizing purposes with
-exception of the nearest-neighbor approach. As an example, \cref{fig:resized} shows
-the images of overlapping disks with almost the same surface-surface and
+exception of the nearest-neighbor approach. As an example, \cref{fig:resized}
+shows the images of overlapping disks with almost the same surface-surface and
 surface-void functions. The values of CFs are almost identical for
 high-resolution and magnified images; the only flaw being the difference in
 $F_{SS}$ for resized and digitized images due to pixelization of the interface
@@ -810,7 +826,8 @@ $C_{0.5}$ decays fast with a decline in the image resolution as demonstrated in
   \centering
   \includegraphics[width=\linewidth]{images/plot-criterion1.png}
   \caption[]{Decay of criterion $C_{0.5}$ as a function of the image resolution
-    for the downscaled image (shown as a resize ratio). The image used for the study is shown as an inset.}
+    for the downscaled image (shown as a resize ratio). The image used for the
+    study is shown as an inset.}
   \label{fig:crit-plot}
 \end{figure}
 
@@ -876,7 +893,8 @@ performance is almost the same (\cref{fig:kernels}). The errors against the
 analytical solution are very similar and the overall performance depends on the
 particular image. Therefore, it is difficult to recommend specific kernel; so,
 the choice of filter \cref{eq:filter-2d}-\cref{eq:filter-3d-2} is purely due to
-the fact that it is computationally more efficient than gradient searching filters.
+the fact that it is computationally more efficient than gradient searching
+filters.
 
 \begin{figure}[ht]
   \centering \includegraphics[width=\linewidth]{images/kernels.png}
@@ -1042,18 +1060,22 @@ surface correlation functions for such porous media in \cref{sec:outline}.
 
 \subsection{Computational efficiency}
 \label{sec:compute}
-We measured the execution times of functions from our \code{CorrelationFunctions.jl} package to compute $F_{SS}$ and $F_{SV}$. The hardware we used is
-Intel Xeon Gold 6248R CPU with DDR4 2400 MHz RAM and Nvidia GeForce RTX
-3090 GPU running under Linux. Input data consists of 2D and 3D square bit arrays with side varying
-from 1000 to 10000 with step 1000 (2D case) or from 100 to 1000 with step 100
-(3D case). The obtained wall times are presented on \cref{fig:exec-times}. As our video RAM is
-limited, the GPU can process three dimensional arrays with dimensions no more
-than $700 \times 700 \times 700$ voxels. A observed speedup from the use of GPU is about 30 times as compared to CPU computations.
+We measured the execution times of functions from our
+\code{CorrelationFunctions.jl} package to compute $F_{SS}$ and $F_{SV}$. The
+hardware we used is Intel Xeon Gold 6248R CPU with DDR4 2400 MHz RAM and Nvidia
+GeForce RTX 3090 GPU running under Linux. Input data consists of 2D and 3D
+square bit arrays with side varying from 1000 to 10000 with step 1000 (2D case)
+or from 100 to 1000 with step 100 (3D case). The obtained wall times are
+presented on \cref{fig:exec-times}. As our video RAM is limited, the GPU can
+process three dimensional arrays with dimensions no more than $700 \times 700
+\times 700$ voxels. A observed speedup from the use of GPU is about 30 times as
+compared to CPU computations.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\linewidth]{images/exec-time.png}
-  \caption[]{Execution times for 2D and 3D input images for CPU and GPU implementations.}
+  \caption[]{Execution times for 2D and 3D input images for CPU and GPU
+    implementations.}
   \label{fig:exec-times}
 \end{figure}
 
@@ -1110,9 +1132,9 @@ not important, the usage of distance maps introduces no inconsistencies, but
 improves the results of the reconstruction.
 
 In addition to fundamental XCT and SEM images acquisition problems (such as
-inhomogeneous chemical composition and density of the solid phase, and partial volume
-effects), as discussed in \cref{sec:intro}, the "digital" approach to evaluate
-surface correlation functions enjoys some additional advantages. As
+inhomogeneous chemical composition and density of the solid phase, and partial
+volume effects), as discussed in \cref{sec:intro}, the "digital" approach to
+evaluate surface correlation functions enjoys some additional advantages. As
 \cref{sec:compute} demonstrated, digital computations can be fast -- this can be
 achieved by FFT on modern GPU hardware, or by vectorized linear segment scanning
 \cite{EPL1}. In addition to efficient computations, digital methods allow
@@ -1122,8 +1144,8 @@ not available for "continuous" approach. This statement is by no means a
 critique of such an approach, as it allows to compute the exact surface CFs in
 cases when the structure can be described by some continuous function, e.g.,
 Gaussian random field \cite{ma2018SS}. Aforementioned computational efficiency
-opens numerous way to apply surface correlation  functions in description of
-real surfaces, surface structural dynamics and establishes them as universal
+opens numerous way to apply surface correlation functions in description of real
+surfaces, surface structural dynamics and establishes them as universal
 interface descriptors. As such, $F_{SS}$ and $F_{SV}$ can serve as metrics in
 deep learning application for stochastic reconstructions and especially
 super-resolution, e.g., \cite{chen2020super,janssens2020,karimpouli2022}, or can
@@ -1217,8 +1239,9 @@ The code used to compute surface correlation functions in this manuscript was
 written in Julia language and available as a Jupyter notebook in Supplementary
 Materials. It uses \code{CorrelationFunctions.jl} package developed by our group
 \cite{CFsjlpaper} that allows efficient computation of surface and other
-correlation functions using both CPU and GPU architectures. The package allows to compute all classical CFs described in Torquato’s book
-\cite{Torquato_book} from digital images.
+correlation functions using both CPU and GPU architectures. The package allows
+to compute all classical CFs described in Torquato’s book \cite{Torquato_book}
+from digital images.
 
 \bibliography{apssamp}
 \end{document}
