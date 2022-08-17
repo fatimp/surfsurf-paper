@@ -366,14 +366,14 @@ $S_2$ with the help of the FFT on modern hardware, especially GPUs. If we apply
 the same analogy to $F_{SS}$, \cref{eq:fss} can be considered as an intersection
 of the interface with itself for all possible shifts. Recall that for the
 correlation length of zero this intersection is technically infinity
-(\cref{sec:definitions}). While surface-void function is well defined at $r=0$,
-it differs from $S_2$ in two significant aspects. Firstly, it resembles two-point
-cross-correlation function (as instead of auto-correlation we have to compute
-correlation between the interface and the void phase). Secondly, such
-cross-correlation is not commutative, so we get two surface-void functions:
-correlation between an interface and a void phase and correlation between a void
-phase and an interface. These considerations will be very useful in
-understanding of our computational framework as described in this section.
+(\cref{sec:definitions}). While surface-void function $F_{sv}$ is well-defined
+at $r=0$, it has some notable features. It can be calculated as
+cross-correlation between the interface and the void phase. Because
+cross-correlation is not commutative there is a complementary function,
+void-surface function $F_{vs}$, which is defined as cross-correlation between
+the void phase and the interface. Because these two functions are dependent,
+namely $F_{sv}(\mathbf{x}) = F_{vs}(-\mathbf{x})$, in this paper we will only
+speak of $F_{sv}$ function.
 
 \subsection{The general algorithm}
 \label{sec:general}
