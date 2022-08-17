@@ -490,7 +490,7 @@ input image with signals in \cref{eq:filter-2d} for 2D case, or
     \right] \label{eq:filter-3d-2} \\
   F_{ij2} &= F_{ij0} \label{eq:filter-3d-3}
 \end{align}
-Such convolutions can be easily parallelized on GPU, and we do this by writing Cuda kernels. After the convolution step is
+Such convolutions can be easily parallelized on GPU, and we do this by writing native Cuda code. After the convolution step is
 finished we take absolute values of the result as an approximation for $M(A')$
 (recalling that $A' = I^{(void)}(A)$ where $A$ is the input image). In physical
 sense the result of this procedure is proportional to the probability that a pixel/voxel under consideration
@@ -876,7 +876,7 @@ performance is almost the same (\cref{fig:kernels}). The errors against the
 analytical solution are very similar and the overall performance depends on the
 particular image. Therefore, it is difficult to recommend specific kernel; so,
 the choice of filter \cref{eq:filter-2d}-\cref{eq:filter-3d-2} is purely due to
-the fact that it is to write its Cuda kernel for GPUs.
+the fact that it is computationally more efficient than gradient searching filters.
 
 \begin{figure}[ht]
   \centering \includegraphics[width=\linewidth]{images/kernels.png}
@@ -1043,7 +1043,7 @@ surface correlation functions for such porous media in \cref{sec:outline}.
 \subsection{Computational efficiency}
 \label{sec:compute}
 We measured the execution times of functions from our \code{CorrelationFunctions.jl} package to compute $F_{SS}$ and $F_{SV}$. The hardware we used is
-Intel Xeon Gold 6248R CPU with \textcolor{red}{YYY} RAM and Nvidia GeForce RTX
+Intel Xeon Gold 6248R CPU with DDR4 2400 MHz RAM and Nvidia GeForce RTX
 3090 GPU running under Linux. Input data consists of 2D and 3D square bit arrays with side varying
 from 1000 to 10000 with step 1000 (2D case) or from 100 to 1000 with step 100
 (3D case). The obtained wall times are presented on \cref{fig:exec-times}. As our video RAM is
