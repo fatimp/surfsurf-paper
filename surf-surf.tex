@@ -56,24 +56,23 @@
   solid material's density, and partial volume effects. In this paper we propose
   to use edge-detecting filters to compute surface CFs in the "digital" fashion
   directly in the images. Computed this way, surface correlation functions are
-  the same as analytically known for Poisson disks and spheres in case the
-  resolution of the image is adequate. Based on the multi-scale image analysis
-  we developed a $C_{0.5}$ criterion that can predict if the imaging resolution
-  is enough to make an accurate evaluation of the surface CFs. We also showed
-  that in case when the input image contains all major features, but do not pass
-  the $C_{0.5}$ criterion, it is possible with the help of image magnification
-  to sample CFs almost similar to those obtained for high-resolution image of
-  the same structure with high $C_{0.5}$. The computational framework as
-  developed here is open source and available within the
-  \code{CorrelationFunctions.jl} package developed by our group. Our "digital"
-  approach was applied to a wide variety of real porous media images of
-  different quality. We discuss critical aspects of surface correlation
-  functions computations as related to different applications. The developed
-  methodology allows applying surface CFs to describe the structure of porous
-  materials based on their experimental images and enhance stochastic
-  reconstructions or super-resolution procedures, or serve as an efficient
-  metrics in machine learning applications due to computationally effective GPU
-  implementation.
+  the same as analytically known for Poisson disks in case the resolution of the
+  image is adequate. Based on the multi-scale image analysis we developed a
+  $C_{0.5}$ criterion that can predict if the imaging resolution is enough to
+  make an accurate evaluation of the surface CFs. We also showed that in case
+  when the input image contains all major features, but do not pass the
+  $C_{0.5}$ criterion, it is possible with the help of image magnification to
+  sample CFs almost similar to those obtained for high-resolution image of the
+  same structure with high $C_{0.5}$. The computational framework as developed
+  here is open source and available within the \code{CorrelationFunctions.jl}
+  package developed by our group. Our "digital" approach was applied to a wide
+  variety of real porous media images of different quality. We discuss critical
+  aspects of surface correlation functions computations as related to different
+  applications. The developed methodology allows applying surface CFs to
+  describe the structure of porous materials based on their experimental images
+  and enhance stochastic reconstructions or super-resolution procedures, or
+  serve as an efficient metrics in machine learning applications due to
+  computationally effective GPU implementation.
 \end{abstract}
 \keywords {3D images; correlation functions; surface-surface function;
   surface-void function; image analysis; image scaling}
@@ -208,18 +207,17 @@ and topology analysis \cite{AWR_PNM,PNM_Morse} or energy minimization problems
 between voxels with some curves, e.g., splines. This way it would be possible to
 perform surface CFs sampling by line intersection as described by Ma and
 Torquato \cite{ma2018SS}. While an exact boundary can be obtained for
-deterministic structures such as disk/sphere packings, splines would provide
-only a very approximate solution for the boundaries of arbitrary digitized
-structure due to the limit in resolution for a given image
-\cite{gerke2012tomographic}. In other words, contours extracted from digital
-images will approach real boundaries between phases only when the spatial
-resolution approaches infinity. But the same is also true for digital
-pixelized/voxelized images. Thus, the options to compute surface correlation
-functions include ``continuous'' approach (such as implemented in
-\cite{ma2018SS}) and ``digital'' approach (similar to computation of $S_2$ from
-digital images) as depicted in \cref{fig:scheme}. Here we propose a modified
-``digital'' approach that lies in between the exact and pixelized solutions for
-a number of reasons:
+deterministic structures such as disk packings, splines would provide only a
+very approximate solution for the boundaries of arbitrary digitized structure
+due to the limit in resolution for a given image \cite{gerke2012tomographic}. In
+other words, contours extracted from digital images will approach real
+boundaries between phases only when the spatial resolution approaches
+infinity. But the same is also true for digital pixelized/voxelized
+images. Thus, the options to compute surface correlation functions include
+``continuous'' approach (such as implemented in \cite{ma2018SS}) and ``digital''
+approach (similar to computation of $S_2$ from digital images) as depicted in
+\cref{fig:scheme}. Here we propose a modified ``digital'' approach that lies in
+between the exact and pixelized solutions for a number of reasons:
 \begin{enumerate}
   \item For a binarized XCT or SEM image the interpolation of the interface
     using "continuous" or "digital" in the limit of $\varepsilon \to 0$ would
