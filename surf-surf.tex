@@ -964,11 +964,56 @@ rocks possess significant under-resolution porosity that would reveal itself on
 higher-resolution images. We discuss the strategies for correct evaluation of
 surface correlation functions for such porous media in \cref{sec:outline}.
 
-\textcolor{red}{We need to interpret the resulting surface CFs somehow - form
-  the image i see that for higher resolution $F_{ss}$ seems to be lower, it is
-  due to lower desntiy of the interface on higher resolution images? Should we
-  compute other corrfunctions, may be even $S_2$ will suffice to further explain
-  what happens? Any other ideas on this matter?}
+In the general case, the correlation functions of the boundary of a binary set
+have at least two characteristic properties: the limit of $F_{ss}$ at large
+distances is related to the square of the surface area (in voxels), and the rate
+of decrease of the correlation function near zero characterizes the "memory" of
+the random process describing the boundary. The last property can be described
+by introducing the concept of correlation radius -- the characteristic
+attenuation distance of the correlation function. Figure \ref{fig:real-data-xct}
+shows examples of XCT images of sandstones and carbonates along with surface
+correlation functions calculated using developed methodology.  One can see from
+the graphs presented that the right limit for all sandstones is significantly
+higher than for carbonate materials, which corresponds to a larger surface area
+for these cubes (in voxels). However, the correlation boundary radius for
+carbonate samples is larger than for sandstones, which indicates a greater
+surface smoothness.
+
+We consider it important to mention one more surface parameter, which can be
+easily calculated based on the presented methodology. One of the key topological
+properties of rough surfaces for physics and applications is the fractal
+dimension. Let us divide the micromodel into cubes with edge length
+$\varepsilon$ (in voxel). The topological measure of the surface is defined as
+\begin{equation*}
+  M_d(\varepsilon) = N(\varepsilon) \varepsilon^d
+\end{equation*}
+where $N(\varepsilon)$ is the number of cubes covering at least one point of the
+surface. The fractal dimension is defined as the value of $d$ for which
+$M_d(\varepsilon) \rightarrow const \ne 0$ for $\varepsilon \rightarrow 0$. In
+the case of piecewisesmooth line or surface, the fractal dimension is an integer
+equal to 1 or 2, respectively (coincides with the topological dimension). For an
+arbitrary surfaces, the fractal dimension is not an integer (see for example
+work \cite{khlyupin2015fractal}, where fractal dimensions of real rock pore
+surfaces are calculated and analysed). The fractal dimension can be effectively
+calculated using the box covering algorithm. For each $\varepsilon$, the number
+$N(\varepsilon)$ of cubes covering the pore surface is calculated; fractal
+dimension $d$ is estimated from the slope of the curve describing
+$\ln N(\varepsilon)$ as a function of $\ln \frac{1}{\varepsilon}$. Thus,
+calculating the correlation functions $F_{ss}$ of the surface for different
+spatial sampling scales $\varepsilon$ (see \cref{fig:scaling-alltogether} with
+our results of surface-surface and surface-void correlation functions for images
+obtained with different resolution) and analyzing the asymptotic at large
+distances gives us the value of $N^2(\varepsilon)$. This makes the further
+calculation of the fractal dimension an easy technical procedure.
+
+It has been shown in many works (see for example
+\cite{aslyamov2019theoretical,khlyupin2016effects,feder1988}) that the fractal
+dimension of a surface as a measure of roughness can make a significant
+contribution to such physical phenomena as the thermodynamics of adsorption and
+materials storage properties, the formation of thin films, surface diffusion,
+and adhesion. However, further development of this issue is not the subject of
+this article and requires a separate study, so we only briefly discuss it in
+this article as a further possibility.
 
 \begin{figure*}[!pt]
   \centering
@@ -1110,8 +1155,7 @@ by higher-resolution imaging of the interface in question with subsequent
 correction of the magnified surface-surface function. Another interesting
 approach would be to relate the $F_{SS}$ to some roughness coefficient that
 could change with time due to, for example, reactive transport within the pores
-\cite{godinho2016,noiriel2021,prokhorov2022} or due to mechanical load %\cite{}%
-\textcolor{red}{Lesha Kh, please add 1-3 papers of your choice!}. Thus, in
+\cite{godinho2016,noiriel2021,prokhorov2022} or due to mechanical load. Thus, in
 conjunction with high-resolution imaging $F_{SS}$ and $F_{SV}$ could serve as
 excellent descriptors of surface change dynamics \cite{chen2022}.
 
