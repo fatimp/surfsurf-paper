@@ -472,11 +472,15 @@ written as follows:
 where $d$ is dimensionality of the image ($d = 2$ for 2D image, $d = 3$ for 3D
 image) and $D(\mathbf{x})$ is evaluated using either \cref{eq:dist-outer} or
 \cref{eq:dist-inner}. When $D = D_i$ we call the resulting interface
-``the inner interface'' and when $D = D_o$ we call it ``the outer interface''.
+``the inner interface'' and when $D = D_o$ we call it ``the outer
+interface''. Hence the inner interface consists of elements in the void phase
+which lie close to the solid phase and the outer interface is the other way
+around, i.e. consists of elements in the solid phase which lie close to the void
+phase.
 
 \textit{Image filtering}. This method creates a grayscale image of the interface
 with the help of the edge-detecting filter. The filter works by convolving the
-input image with signals in \cref{eq:filter-2d} for 2D case, or
+input image with signals \cref{eq:filter-2d} for 2D case, or
 \cref{eq:filter-3d-1}-\cref{eq:filter-3d-3} for 3D case.
 \begin{align}
   F &= \frac{\sqrt{2}}{9} \left[
@@ -502,14 +506,24 @@ input image with signals in \cref{eq:filter-2d} for 2D case, or
     \right] \label{eq:filter-3d-2} \\
   F_{ij2} &= F_{ij0} \label{eq:filter-3d-3}
 \end{align}
-Such convolutions can be easily parallelized on GPU, and we do this by writing
-native Cuda code. After the convolution step is finished we take absolute values
-of the result as an approximation for $M(A')$ (recalling that $A' =
-I^{(void)}(A)$ where $A$ is the input image). In physical sense the result of
-this procedure is proportional to the probability that a pixel/voxel under
-consideration belongs to the interface. From now on we shall call the filter $F$
-simply ``edge detection filter'', not to be confused with other edge detection
-filters that will be considered shortly.
+These signals are so called high-pass finite impulse response
+filters. Coefficients in tensors \cref{eq:filter-2d} and
+\cref{eq:filter-3d-1}-\cref{eq:filter-3d-3} sum to zero, hence a result of
+application of an edge-detecting filter to a constant input is also zero, which
+means there is no ``interface'' in a constant image. On the other side, when an
+input image varies a lot, application of this filter gives a big response in the
+place of variation, effectively detecting an edge. Scaling coefficients in front
+of the tensors are found empirically to achieve a good correspondence with a
+theory.
+
+An application of these filters (i.e. convolution) can be easily parallelized on
+GPU, and we do this by writing native Cuda code. After the convolution step is
+finished we take absolute values of the result as an approximation for $M(A')$
+(recalling that $A' = I^{(void)}(A)$ where $A$ is the input image). In physical
+sense the result of this procedure is proportional to the probability that a
+pixel/voxel under consideration belongs to the interface. From now on we shall
+call the filter $F$ simply ``edge-detecting filter'' when no other filter is
+explicitly mentioned.
 
 \subsection{Computing correlations}
 \label{sec:cross-comp}
@@ -653,7 +667,7 @@ are shown in \cref{fig:scaling-alltogether}.
   \caption[]{Surface-surface and surface-void correlation functions for
     images of overlapping disks and thresholded value noise obtained with
     different resolution. Theoretical results are also shown for overlapping
-    disks.}
+    disks. Image filtering was used for interface extraction.}
   \label{fig:scaling-alltogether}
 \end{figure*}
 
@@ -764,7 +778,8 @@ $F_{SS}$ for resized and digitized images due to pixelization of the interface
     \label{fig:resized-sv}}
   \caption[]{An example of images with almost identical correlation functions
     obtained using different methods: direct digitalization from known disk
-    positions and magnification using bilinear interpolation.}
+    positions and magnification using bilinear interpolation. Image filtering
+    was used for interface extraction.}
   \label{fig:resized}
 \end{figure*}
 
@@ -835,7 +850,7 @@ $C_{0.5}$ decays fast with a decline in the image resolution as demonstrated in
   \centering
   \includegraphics[width=\linewidth]{images/dm_sobel.png}
   \caption{Surface-surface correlation function calculated with different
-    interface extraction methods (Edge detection filter to the left, and
+    interface extraction methods (Edge-detection filter to the left, and
     distance map to the right on the insets). Discretization of each disk is 20
     pixels per diameter, the size is $1000 \times 1000$ pixels.}
   \label{fig:interface-extraction}
@@ -849,7 +864,7 @@ pixels) computed with different methods of interface extraction are shown on
 filter \cref{eq:filter-2d}-\cref{eq:filter-3d-3} and interface extraction with
 distance map. When using distance map both outer (\cref{eq:dist-outer}) and
 inner (\cref{eq:dist-inner}) interfaces are used to compute the correlation
-function. An average over the last two functions is also shown. Edge detection
+function. An average over the last two functions is also shown. Edge-detecting
 filter clearly outperforms the distance map approach. However, the result on
 \cref{fig:interface-extraction} could be related to the resolution of studied
 image. If we now increase the discretization of the disks and, thus, the image
@@ -857,7 +872,7 @@ resolution ($R = 70,\ \lambda = 3 \cdot 10^{-6}$ on image with dimensions of
 $5000 \times 5000$ pixels) we get the result as presented on
 \cref{fig:sobel-vs-distance-map}. In this case the image filtering method again
 collapses to an analytical solution whilst the distance map method failed to do
-so. This subsection's results clearly advocate in favor of the edge-detection
+so. This subsection's results clearly advocate in favor of the edge-detecting
 filter in case of surface CFs evolution based on digital images.
 
 To demonstrate the possibilities to compute directional surface correlation
@@ -871,7 +886,7 @@ CFs.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\linewidth]{images/sobel-vs-distance-map.png}
-  \caption{Comparison of edge detection filter and distance map approach on
+  \caption{Comparison of edge-detecting filter and distance map approach on
     high-resolution image with 140 pixels per disk diameter, the size is
     $5000 \times 5000$ pixels.}
   \label{fig:sobel-vs-distance-map}
@@ -885,7 +900,7 @@ CFs.
   \label{fig:direction-vs-map}
 \end{figure}
 
-In addition to edge detection filter of our choice, there are plenty of other
+In addition to edge-detecting filter of our choice, there are plenty of other
 kernels for gradient evaluation \cite{bickley1948,prewitt1970,ando2000}. In
 total, we investigated Sobel, Ando, Sharr, Bickley and Prewitt filters. Their
 performance is almost the same (\cref{fig:kernels}). The errors against the
@@ -1208,7 +1223,7 @@ available \code{CorrelationFunctions.jl} package. Based on the computed $F_{SS}$
 and $F_{SV}$ functions for a variety of artificial and real XCT/SEM digital
 images we were able to conclude:
 \begin{enumerate}
-  \item On digital images edge-detection filters can be utilized to effectively
+  \item On digital images edge-detecting filters can be utilized to effectively
     extract the interface for surface CFs computations.
   \item It is possible to use digital images as a foundation for robust surface
     correlation functions evaluation in case their spatial resolution is
