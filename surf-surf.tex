@@ -474,9 +474,9 @@ image) and $D(\mathbf{x})$ is evaluated using either \cref{eq:dist-outer} or
 \cref{eq:dist-inner}. When $D = D_i$ we call the resulting interface
 ``the inner interface'' and when $D = D_o$ we call it ``the outer
 interface''. Hence the inner interface consists of elements in the void phase
-which lie close to the solid phase and the outer interface is the other way
-around, i.e. consists of elements in the solid phase which lie close to the void
-phase.
+which lie on the interface with the solid phase and the outer interface is the other way
+around, i.e. consists of elements in the solid phase which lie on the interface
+with the void phase.
 
 \textit{Image filtering}. This method creates a grayscale image of the interface
 with the help of the edge-detecting filter. The filter works by convolving the
@@ -510,7 +510,7 @@ These signals are so called high-pass finite impulse response
 filters. Coefficients in tensors \cref{eq:filter-2d} and
 \cref{eq:filter-3d-1}-\cref{eq:filter-3d-3} sum to zero, hence a result of
 application of an edge-detecting filter to a constant input is also zero, which
-means there is no ``interface'' in a constant image. On the other side, when an
+means there is no ``interface'' in a constant image. On the other hand, when an
 input image varies a lot, application of this filter gives a big response in the
 place of variation, effectively detecting an edge. Scaling coefficients in front
 of the tensors are found empirically to achieve a good correspondence with a
