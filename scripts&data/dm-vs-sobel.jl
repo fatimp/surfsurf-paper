@@ -189,7 +189,7 @@ function produce_kernel_plot!()
 
     figure(figsize = (10, 8); dpi = 300)
     rc("font", size = 18)
-    ticklabel_format(axis = "y", scilimits = (0, 0))
+    ticklabel_format(axis = "y", scilimits = (0, 0), useMathText = true)
     plot(0:400, th.(0:400))
 
     let
@@ -230,6 +230,7 @@ function produce_another_comparison!()
 
     figure(figsize = (10, 8), dpi = 300)
     rc("font", size = 18)
+    ticklabel_format(axis = "y", scilimits = (0, 0), useMathText = true)
     xs = plot_it!([Utilities.extract_edges])
     xs = plot_it!([distance_map_edge])
     xs = plot_it!([distance_map_edge ∘ (.!)])
