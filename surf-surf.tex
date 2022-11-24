@@ -920,6 +920,55 @@ filters.
   \label{fig:kernels}
 \end{figure}
 
+\section{Comparison with an earlier algorithm of Ma and Torquato}
+\label{sec:comparison-ma}
+Our algorithm has some features which can make it more preferrable than an
+algorithm of Ma and Torquato\cite{ma2018SS}. Our algorithm has fewer degrees of
+freedom in the sense that it does not require to specify any optional parameters
+and does not depend on any particular method for finding intersections between a
+ray and an interface between phases. The original implementation of Ma's and
+Torquato's algorithm has three such parameters: the standard deviation $\sigma$
+of the Gaussian filter to convert a binary image to a ``scalar field'', the cosine
+threshold $\phi$, and another threshold $T$ for finding intersections of test
+rays with the interface. While the choice of $T$ and $\phi$ is restricted, it is
+not clean how to select the parameter $\sigma$. Moreover, the algorithm is
+unstable with regard to these parameters, giving a completely different results
+with small change in parameters (\textcolor{red}{Fig}).
+
+In author's original implementation the following filters are chosen to compute
+a normal to the interface in the point of intersection with a ray:
+
+\begin{align*}
+  D_x &= \left[
+    \begin{array}{ccc}
+        0 & 0 &  0 \\
+        1 & 0 & -1 \\
+        0 & 0 &  0
+      \end{array}
+    \right] \\
+  D_y &= \left[
+    \begin{array}{ccc}
+        0 &  1 & 0 \\
+        0 &  0 & 0 \\
+        0 & -1 & 0
+    \end{array}
+    \right]
+\end{align*}
+
+When any other gradient operator is used in the place of $D$ the result of
+computation is changed significantly \textcolor{red}{Fig}. Our method, on the
+contrary, is stable against such changes (\cref{fig:kernels}).
+
+Using the algorithm of Ma and Torquato on overlapping disks as described in
+\cref{sec:comparison} gives a ``wandering singularity'' feature which manifests
+in that a peak which must be strictly at $r = 2R$ is actualy misplaced (the
+exact amount of misplacement depends on a resoulution of an
+image). \textcolor{red}{Fig}. Our method makes it possible to correctly find $R$
+for almost any resolution (\cref{fig:scaling-alltogether}).
+
+Finally, our algorithm produces a result much closer to the theory in the case
+of overlapping disks.
+
 \section{Application to binary XCT and SEM images of porous media}
 \label{sec:application}
 After the verification of our computational approach based on analytical
