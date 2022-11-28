@@ -240,8 +240,9 @@ as follows: in \cref{sec:details} we provide all methodological details for
 surface CFs computation including analytical solutions to verify the proposed
 methodology and describe an image library for extensive testing of our
 algorithms, \cref{sec:results} presents all major results of surface functions
-evaluations. We discuss obtained results, including the effects of image
-scaling, and outline future uses of surface functions within
+evaluations. Our algorithm is compared with an earlier algorithm of Ma and
+Torquato in \cref{sec:comparison-ma}. We discuss obtained results, including the
+effects of image scaling, and outline future uses of surface functions within
 \cref{sec:outline}. The paper concludes with a summary in \cref{sec:summary}.
 
 \section{Theoretical background}
@@ -691,7 +692,7 @@ quality of surface CFs evaluation from digital images?''. Turns out there is a
 possibility to establish such an empirical criterion based on spectral analysis
 of input images and \cref{sec:crit} will provide all necessary details.
 
-\subsection{Convergence of correlation functions with increasing resolution}
+\subsection{Convergence of correlation functions with increase of resolution}
 \label{sec:value-noise}
 Now consider a situation when an image is obtained by taking samples of a function
 $f: \mathbb{R}^n \rightarrow \left\{0, 1\right\}$. The samples are taken from a
@@ -720,7 +721,7 @@ Here $n$ is a parameter called the number of octaves. A thresholded noise is the
   f(x; n) = \Theta(g(x; n) - 1/2)
 \end{align*}
 where $\Theta(x)$ is the Heaviside step function. A generalization for higher
-dimensionality is constructed using the sample principle. An example of
+dimensionality is constructed using the same principle. An example of
 thresholded value noise with three octaves is depicted on
 \cref{fig:disks-noise}. Correlation functions calculated for the noise with
 $n = 3$ at different resolutions are on \cref{fig:scaling-alltogether}. If we
