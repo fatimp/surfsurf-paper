@@ -932,9 +932,9 @@ $O(n)$ complexity for finding intersections with probe rays and $O(m^2)$ for
 computation of correlation functions where $m$ is a number of found
 intersections. Therefore, performance of Ma's and Torquato's algorithm depends
 on the input (more specifically, on the number of intersections of the interface
-and probe rays).
+and probe rays) and may be unsatisfying when $n \sim m$.
 
-Secondly, Ma's and Torquato's algorithm is very noisy (at least its
+Secondly, Ma's and Torquato's algorithm is very noisy (at least an
 implementation provided with the paper is). The noise does not disappear even
 with increase in resolution of the input image (\cref{fig:torquato}).
 
@@ -946,6 +946,44 @@ algorithm. Generally, our $C_{0.5}$ criterion applies to their algorighm too. In
 case the input image fails to satisfy $C_{0.5}$ criterion, the algorithm becomes
 very sensitive to selection of parameter of Gauss filter, threshold and
 gradient operator (\cref{fig:torquato-param}).
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{images/torquato-we.png}
+  \caption[]{Our algorithm compared with an algorithm of Ma and Torquato. An
+    image of 10000 overlapping disks, image dimensions $5000 \times 5000$, ratio
+    of solid phase $\phi = 0.675$, $C_{0.5} = 0.934$.}
+  \label{fig:torquato}
+\end{figure}
+
+
+\begin{figure*}[!pt]
+  \centering
+  \subfigure[Image dimensions $1500 \times 1500$, $C_{0.5} = 0.880$.]{
+    \includegraphics[width=0.45\linewidth]{images/torquato-param.png}
+    \label{fig:torquato-param-bad}}
+  \hfill
+  \subfigure[Image dimensions $5000 \times 5000$, $C_{0.5} = 0.934$]{
+    \includegraphics[width=0.45\linewidth]{images/torquato-param-2.png}
+    \label{fig:torquato-param-good}}
+  \caption[]{Illustration of how a choice of parameters affect Ma's and
+    Torquato's algorithm. In the case of image of overlapping disks with low
+    resolution (\cref{fig:torquato-param-bad}) an output varies drastically with
+    a change in standard deviation of Gaussian filter. When the algorithm is
+    applicable (\cref{fig:torquato-param-good}) the sensitivity to parameters
+    decreases.}
+  \label{fig:torquato-param}
+\end{figure*}
+
+%\begin{figure}
+%  \centering
+%  \includegraphics[width=\linewidth]{images/torquato-param.png}
+%  \caption[]{Illustration of how a choice of parameters affect Ma's and
+%    Torquato's algorithm. An image of overlapping disks with low resolution
+%    ($1500 \times 1500$ pixels, $C_{0.5} = 0.880$). An output varies drastically
+%    with a change in standard deviation of Gaussian filter.}
+%  \label{fig:torquato-param}
+%\end{figure}
 
 \section{Application to binary XCT and SEM images of porous media}
 \label{sec:application}
