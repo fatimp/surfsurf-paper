@@ -924,29 +924,28 @@ filters.
 \section{Comparison with an earlier algorithm of Ma and Torquato}
 \label{sec:comparison-ma}
 Our algorithm has some features which can make it more preferrable than an
-algorithm of Ma and Torquato\cite{ma2018SS}. Firstly our algorithm has better
-complexity than the algorithm of Torquato. Our algorithm has two steps: edge
-detection and computation of autocorrelation. The first step has $O(n)$
-complexity and the second step has $O(n \log n)$ complexity where $n$ is a
-number of pixels (or voxels) in the input. Ma's and Torquato's algorithm has
-$O(n)$ complexity for finding intersections with probe rays and $O(m^2)$ for
-computation of correlation functions where $m$ is a number of found
-intersections. Therefore, performance of Ma's and Torquato's algorithm depends
-on the input (more specifically, on the number of intersections of the interface
-and probe rays) and may be unsatisfying when $n \sim m$.
+algorithm of Ma and Torquato\cite{ma2018SS}. It has better complexity than the
+algorithm of Torquato. There are two steps in our algorithm: edge detection and
+computation of autocorrelation. The first step has $O(n)$ complexity and the
+second step has $O(n \log n)$ complexity where $n$ is a number of pixels (or
+voxels) in the input. Ma's and Torquato's algorithm has $O(n)$ complexity for
+finding intersections with probe rays and $O(m^2)$ for computation of
+correlation functions where $m$ is a number of found intersections. Therefore,
+performance of Ma's and Torquato's algorithm depends on the input (more
+specifically, on the number of intersections of the interface and probe rays)
+and may be unsatisfying when $n \sim m$.
 
-Secondly, Ma's and Torquato's algorithm is very noisy (at least an
-implementation provided with the paper is). The noise does not disappear even
+Ma's and Torquato's algorithm is very noisy (at least our implementation and an
+implementation provided with the paper are). The noise does not disappear even
 with increase in resolution of the input image (\cref{fig:torquato}).
 
-Thirdly, in the case of overlapping disks, Torquato's algorithm produces results
-which are farther from the theory than ours (\cref{fig:torquato}).
+In the case of overlapping disks, Torquato's algorithm produces results which
+are farther from the theory than ours (\cref{fig:torquato}).
 
-Finally, Ma and Torquato do not provide any criterion of applicability for their
-algorithm. Generally, our $C_{0.5}$ criterion applies to their algorighm too. In
-case the input image fails to satisfy $C_{0.5}$ criterion, the algorithm becomes
-very sensitive to selection of parameter of Gauss filter, threshold and
-gradient operator (\cref{fig:torquato-param}).
+Their algorithm is very sensitive to selection of standard deviation $\sigma$ of
+Gauss filter and it is not clean how to select this parameter properly
+(\cref{fig:torquato-param}). Finally, Ma and Torquato do not provide any
+criterion of applicability for their algorithm.
 
 An implementation\cite{torquato-functions} of the algorithm of Ma and Torquato
 used in this comparison was written by our group and \textcolor{red}{released to
@@ -964,18 +963,17 @@ used in this comparison was written by our group and \textcolor{red}{released to
 \begin{figure*}[!pt]
   \centering
   \subfigure[Image dimensions $1500 \times 1500$, $C_{0.5} = 0.880$.]{
-    \includegraphics[width=0.45\linewidth]{images/torquato-param.png}
-    \label{fig:torquato-param-bad}}
+    \includegraphics[width=0.45\linewidth]{images/torquato-sigma-small.png}
+    \label{fig:torquato-sigma-small}}
   \hfill
-  \subfigure[Image dimensions $5000 \times 5000$, $C_{0.5} = 0.934$]{
-    \includegraphics[width=0.45\linewidth]{images/torquato-param-2.png}
-    \label{fig:torquato-param-good}}
-  \caption[]{Illustration of how a choice of parameters affect Ma's and
-    Torquato's algorithm. In the case of image of overlapping disks with low
-    resolution (\cref{fig:torquato-param-bad}) an output varies drastically with
-    a change in standard deviation of Gaussian filter. When the algorithm is
-    applicable (\cref{fig:torquato-param-good}) the sensitivity to parameters
-    decreases.}
+  \subfigure[Image dimensions $5000 \times 5000$, $C_{0.5} = 0.934$.]{
+    \includegraphics[width=0.45\linewidth]{images/torquato-sigma.png}
+    \label{fig:torquato-sigma}}
+  \caption[]{Illustration of how a choice of $\sigma$ affects Ma's and
+    Torquato's algorithm. Two cases of images of overlapping disks are
+    shown. Our algorithm cannot process \cref{fig:torquato-sigma-small}, but
+    works good for \cref{fig:torquato-sigma}, while Ma's and Torquato's
+    algorithm produce results highly dependant on $\sigma$ in the both cases.}
   \label{fig:torquato-param}
 \end{figure*}
 
