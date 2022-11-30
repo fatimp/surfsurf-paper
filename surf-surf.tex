@@ -948,6 +948,17 @@ Gauss filter and it is not clean how to select this parameter properly
 (\cref{fig:torquato-param}). Finally, Ma and Torquato do not provide any
 criterion of applicability for their algorithm.
 
+Ma and Torquato also claim that their algorithm can be applied to grayscale
+images directly. This statement requires further clarification because it is not
+clear how an indicator function is defined in this case. In authors'
+implementation there is a parameter $T$ and the function is defined as
+\begin{equation*}
+  I^{(solid)}(\mathbf{x}) = \Theta(A(\mathbf{x}) - T)
+\end{equation*}
+where $A(\mathbf{x})$ is an intensity of a pixel in the image at the coordinate
+$\mathbf{x}$. This approach gives a result which is highly sensitive to a choice
+of $T$ (\cref{fig:torquato-segm}).
+
 An implementation\cite{torquato-functions} of the algorithm of Ma and Torquato
 used in this comparison was written by our group and \textcolor{red}{released to
   the public domain} and is available for download and study.
@@ -978,15 +989,21 @@ used in this comparison was written by our group and \textcolor{red}{released to
   \label{fig:torquato-param}
 \end{figure*}
 
-%\begin{figure}
-%  \centering
-%  \includegraphics[width=\linewidth]{images/torquato-param.png}
-%  \caption[]{Illustration of how a choice of parameters affect Ma's and
-%    Torquato's algorithm. An image of overlapping disks with low resolution
-%    ($1500 \times 1500$ pixels, $C_{0.5} = 0.880$). An output varies drastically
-%    with a change in standard deviation of Gaussian filter.}
-%  \label{fig:torquato-param}
-%\end{figure}
+\begin{figure*}[!pt]
+  \centering
+  \subfigure[Grayscale image.]{
+    \includegraphics[width=0.45\linewidth]{images/berea-slice.png}
+    \label{fig:torquato-berea}}
+  \hfill
+  \subfigure[Surface-surface correlation function.]{
+    \includegraphics[width=0.45\linewidth]{images/torquato-berea.png}
+    \label{fig:torquato-berea-ss}}
+  \caption[]{A two-dimensional slice of Berea sandstone\cite{sandstone-dataset}
+    (\cref{fig:torquato-berea}) and surface-surface correlation functions
+    computed with different threshold parameter $T$
+    \cref{fig:torquato-berea-ss}.}
+  \label{fig:torquato-segm}
+\end{figure*}
 
 \section{Application to binary XCT and SEM images of porous media}
 \label{sec:application}
