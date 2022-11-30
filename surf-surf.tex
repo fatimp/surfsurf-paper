@@ -943,7 +943,7 @@ with increase in resolution of the input image (\cref{fig:torquato}).
 In the case of overlapping disks, Torquato's algorithm produces results which
 are farther from the theory than ours (\cref{fig:torquato}).
 
-Their algorithm is very sensitive to selection of standard deviation $\sigma$ of
+Their algorithm is very sensitive to selection of standard deviation $b$ of
 Gauss filter and it is not clean how to select this parameter properly
 (\cref{fig:torquato-param}). Finally, Ma and Torquato do not provide any
 criterion of applicability for their algorithm.
@@ -981,11 +981,11 @@ used in this comparison was written by our group and \textcolor{red}{released to
   \subfigure[Image dimensions $5000 \times 5000$, $C_{0.5} = 0.934$.]{
     \includegraphics[width=0.45\linewidth]{images/torquato-sigma.png}
     \label{fig:torquato-sigma}}
-  \caption[]{Illustration of how a choice of $\sigma$ affects Ma's and
+  \caption[]{Illustration of how a choice of $b$ affects Ma's and
     Torquato's algorithm. Two cases of images of overlapping disks are
     shown. Our algorithm cannot process \cref{fig:torquato-sigma-small}, but
     works good for \cref{fig:torquato-sigma}, while Ma's and Torquato's
-    algorithm produce results highly dependant on $\sigma$ in the both cases.}
+    algorithm produce results highly dependant on $b$ in the both cases.}
   \label{fig:torquato-param}
 \end{figure*}
 
